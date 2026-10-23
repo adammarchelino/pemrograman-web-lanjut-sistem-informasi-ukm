@@ -13,6 +13,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use LogicException;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,17 +38,96 @@ class DatabaseSeeder extends Seeder
             'role' => 'mahasiswa',
         ]);
 
-        $ukm = Ukm::firstOrCreate(['nama' => 'Pecinta Alam Poliwangi'], [
-            'deskripsi' => 'UKM kegiatan alam terbuka dan konservasi lingkungan.',
-            'visi' => 'Membangun mahasiswa yang peduli alam dan tangguh.',
-            'misi' => 'Mengadakan kegiatan pendidikan, konservasi, dan ekspedisi.',
-            'email_kontak' => 'alam@example.test',
-            'nomor_kontak' => '081234567890',
-            'status' => 'aktif',
-            'status_pendaftaran_anggota' => 'dibuka',
-            'pendaftaran_anggota_dibuka_pada' => now()->subDay(),
-            'pendaftaran_anggota_ditutup_pada' => now()->addMonth(),
-        ]);
+        $dataUkm = [
+            [
+                'nama' => 'UKM Geniwangi',
+                'deskripsi' => 'Wadah bagi mahasiswa untuk menyalurkan dan mengembangkan bakat di bidang seni rupa, suara, musik, tari, teater, dan kebudayaan.',
+            ],
+            [
+                'nama' => 'UKM Ikatan Mahasiswa Muslim (IMAM)',
+                'deskripsi' => 'Unit kegiatan kerohanian Islam yang berfokus pada pembinaan karakter, dakwah, pendidikan keagamaan, serta keikutsertaan dalam ajang perlombaan Islami tingkat nasional.',
+            ],
+            [
+                'nama' => 'UKM Kewirausahaan',
+                'deskripsi' => 'Fokus pada pengembangan jiwa bisnis, pelatihan kewirausahaan, dan inkubasi rintisan usaha bagi mahasiswa.',
+            ],
+            [
+                'nama' => 'UKM Korps Sukarela (KSR)',
+                'deskripsi' => 'Unit yang bergerak di bidang kemanusiaan, kesehatan, penanganan medis darurat, serta pelayanan sosial (bekerjasama dengan Palang Merah Indonesia).',
+            ],
+            [
+                'nama' => 'UKM Mahasiswa Penggiat Alam (Mapala)',
+                'deskripsi' => 'Wadah bagi mahasiswa pecinta alam yang aktif dalam kegiatan petualangan alam bebas, konservasi lingkungan, mitigasi bencana, dan penjelajahan.',
+            ],
+            [
+                'nama' => 'UKM Riset dan Pengabdian Berdampak (RPB)',
+                'deskripsi' => 'Fokus pada kegiatan penelitian ilmiah, inovasi teknologi, penulisan karya tulis, serta program pengabdian kepada masyarakat.',
+            ],
+            [
+                'nama' => 'UKM Olahraga',
+                'deskripsi' => 'Menjadi wadah pembinaan dan penyaluran minat bakat di berbagai cabang olahraga (seperti sepak bola, bulu tangkis, bola voli, basket, pencak silat/taekwondo, dll.).',
+            ],
+            [
+                'nama' => 'UKM Racana Prabu Tawang Alun – Sritanjung',
+                'deskripsi' => 'Gugus depan gerakan Pramuka di lingkungan kampus Poliwangi untuk putra dan putri.',
+            ],
+            [
+                'nama' => 'UKM Resimen Mahasiswa (Menwa)',
+                'deskripsi' => 'Satuan kegiatan mahasiswa yang berfokus pada bela negara, kedisiplinan, keamanan kampus, serta wawasan kebangsaan.',
+            ],
+            [
+                'nama' => 'UKM LENTERA (Language, Ethnicity, Nusantara, and Transnational Awareness)',
+                'deskripsi' => 'Fokus pada pengembangan kapasitas bahasa asing, apresiasi budaya nusantara, serta wawasan internasional.',
+            ],
+        ];
+
+        $mapalaName = 'UKM Mahasiswa Penggiat Alam (Mapala)';
+        $legacyMapala = Ukm::query()->where('nama', 'Pecinta Alam Poliwangi')->first();
+        $mapala = Ukm::query()->where('nama', $mapalaName)->first();
+
+        if ($legacyMapala && $mapala && $legacyMapala->isNot($mapala)) {
+            throw new LogicException('Data UKM Mapala lama dan baru sama-sama ada; periksa relasi sebelum menjalankan seeder.');
+        }
+
+        $ukmByName = [];
+
+        foreach ($dataUkm as $data) {
+            $ukm = Ukm::query()->firstOrNew(['nama' => $data['nama']]);
+
+            if ($data['nama'] === $mapalaName && ! $ukm->exists && $legacyMapala) {
+                $ukm = $legacyMapala;
+            }
+
+            $ukm->fill([
+                'nama' => $data['nama'],
+                'deskripsi' => $data['deskripsi'],
+                'status' => 'nonaktif',
+                'status_pendaftaran_anggota' => 'ditutup',
+                'pendaftaran_anggota_dibuka_pada' => null,
+                'pendaftaran_anggota_ditutup_pada' => null,
+            ]);
+
+            if ($data['nama'] === $mapalaName && $legacyMapala) {
+                // Clear only the old seeder's known fictitious profile details.
+                if ($ukm->visi === 'Membangun mahasiswa yang peduli alam dan tangguh.') {
+                    $ukm->visi = null;
+                }
+                if ($ukm->misi === 'Mengadakan kegiatan pendidikan, konservasi, dan ekspedisi.') {
+                    $ukm->misi = null;
+                }
+                if ($ukm->email_kontak === 'alam@example.test') {
+                    $ukm->email_kontak = null;
+                }
+                if ($ukm->nomor_kontak === '081234567890') {
+                    $ukm->nomor_kontak = null;
+                }
+            }
+
+            $ukm->save();
+            $ukmByName[$data['nama']] = $ukm;
+        }
+
+        $ukm = $ukmByName[$mapalaName];
 
         $pengurus = User::firstOrCreate(['email' => 'pengurus.alam@example.test'], [
             'name' => 'Pengurus UKM Alam',

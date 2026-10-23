@@ -146,8 +146,35 @@ it('keeps the database seeder safe to run more than once', function () {
     Artisan::call('db:seed');
     Artisan::call('db:seed');
 
-    expect(Ukm::query()->where('nama', 'Pecinta Alam Poliwangi')->count())->toBe(1)
+    $expectedUkm = [
+        'UKM Geniwangi' => 'Wadah bagi mahasiswa untuk menyalurkan dan mengembangkan bakat di bidang seni rupa, suara, musik, tari, teater, dan kebudayaan.',
+        'UKM Ikatan Mahasiswa Muslim (IMAM)' => 'Unit kegiatan kerohanian Islam yang berfokus pada pembinaan karakter, dakwah, pendidikan keagamaan, serta keikutsertaan dalam ajang perlombaan Islami tingkat nasional.',
+        'UKM Kewirausahaan' => 'Fokus pada pengembangan jiwa bisnis, pelatihan kewirausahaan, dan inkubasi rintisan usaha bagi mahasiswa.',
+        'UKM Korps Sukarela (KSR)' => 'Unit yang bergerak di bidang kemanusiaan, kesehatan, penanganan medis darurat, serta pelayanan sosial (bekerjasama dengan Palang Merah Indonesia).',
+        'UKM Mahasiswa Penggiat Alam (Mapala)' => 'Wadah bagi mahasiswa pecinta alam yang aktif dalam kegiatan petualangan alam bebas, konservasi lingkungan, mitigasi bencana, dan penjelajahan.',
+        'UKM Riset dan Pengabdian Berdampak (RPB)' => 'Fokus pada kegiatan penelitian ilmiah, inovasi teknologi, penulisan karya tulis, serta program pengabdian kepada masyarakat.',
+        'UKM Olahraga' => 'Menjadi wadah pembinaan dan penyaluran minat bakat di berbagai cabang olahraga (seperti sepak bola, bulu tangkis, bola voli, basket, pencak silat/taekwondo, dll.).',
+        'UKM Racana Prabu Tawang Alun – Sritanjung' => 'Gugus depan gerakan Pramuka di lingkungan kampus Poliwangi untuk putra dan putri.',
+        'UKM Resimen Mahasiswa (Menwa)' => 'Satuan kegiatan mahasiswa yang berfokus pada bela negara, kedisiplinan, keamanan kampus, serta wawasan kebangsaan.',
+        'UKM LENTERA (Language, Ethnicity, Nusantara, and Transnational Awareness)' => 'Fokus pada pengembangan kapasitas bahasa asing, apresiasi budaya nusantara, serta wawasan internasional.',
+    ];
+
+    $seededUkm = Ukm::query()->get()->keyBy('nama');
+
+    expect($seededUkm)->toHaveCount(10);
+
+    foreach ($expectedUkm as $nama => $deskripsi) {
+        expect($seededUkm->has($nama))->toBeTrue()
+            ->and($seededUkm[$nama]->deskripsi)->toBe($deskripsi)
+            ->and($seededUkm[$nama]->status)->toBe('nonaktif')
+            ->and($seededUkm[$nama]->status_pendaftaran_anggota)->toBe('ditutup');
+    }
+
+    expect(Ukm::query()->where('nama', 'Pecinta Alam Poliwangi')->exists())->toBeFalse()
         ->and(User::query()->where('email', 'mahasiswa@example.test')->count())->toBe(1)
         ->and(User::query()->where('email', 'test@example.com')->count())->toBe(1)
+        ->and(User::query()->where('email', 'pengurus.alam@example.test')->count())->toBe(1)
+        ->and(PendaftaranAnggota::query()->count())->toBe(1)
+        ->and(Keanggotaan::query()->count())->toBe(1)
         ->and(Kegiatan::query()->where('nama', 'Pelatihan Dasar Pecinta Alam')->count())->toBe(1);
 });
