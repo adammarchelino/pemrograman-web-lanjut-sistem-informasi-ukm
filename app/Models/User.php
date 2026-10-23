@@ -7,6 +7,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -28,7 +30,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'nim', 'role', 'ukm_id'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
@@ -46,6 +48,36 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function ukm(): BelongsTo
+    {
+        return $this->belongsTo(Ukm::class);
+    }
+
+    public function pendaftaranAnggota(): HasMany
+    {
+        return $this->hasMany(PendaftaranAnggota::class);
+    }
+
+    public function keputusanPendaftaranAnggota(): HasMany
+    {
+        return $this->hasMany(PendaftaranAnggota::class, 'diputuskan_oleh');
+    }
+
+    public function keanggotaan(): HasMany
+    {
+        return $this->hasMany(Keanggotaan::class);
+    }
+
+    public function registrasiKegiatan(): HasMany
+    {
+        return $this->hasMany(RegistrasiKegiatan::class);
+    }
+
+    public function presensiDicatat(): HasMany
+    {
+        return $this->hasMany(Presensi::class, 'dicatat_oleh');
     }
 
     /**
