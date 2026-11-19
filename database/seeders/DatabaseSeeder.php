@@ -31,6 +31,15 @@ class DatabaseSeeder extends Seeder
             'role' => 'mahasiswa',
         ]);
 
+        $kemahasiswaan = User::firstOrCreate(['email' => 'kemahasiswaan@example.test'], [
+            'name' => 'Admin Kemahasiswaan',
+            'password' => Hash::make('password'),
+            'role' => User::ROLE_KEMAHASISWAAN,
+        ]);
+        if (! $kemahasiswaan->hasVerifiedEmail()) {
+            $kemahasiswaan->markEmailAsVerified();
+        }
+
         $mahasiswa = User::firstOrCreate(['email' => 'mahasiswa@example.test'], [
             'name' => 'Test User',
             'password' => Hash::make('password'),
