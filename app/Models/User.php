@@ -30,7 +30,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password', 'nim', 'role', 'ukm_id'])]
+#[Fillable(['name', 'email', 'password', 'nim', 'role', 'ukm_id', 'akun_aktif', 'jabatan_ukm', 'divisi_ukm_id', 'wajib_ganti_password', 'email_verified_at'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
@@ -47,12 +47,100 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'akun_aktif' => 'boolean',
+            'wajib_ganti_password' => 'boolean',
         ];
+    }
+
+    public const ROLE_MAHASISWA = 'mahasiswa';
+
+    public const ROLE_PENGURUS_UKM = 'pengurus_ukm';
+
+    public const ROLE_KEMAHASISWAAN = 'kemahasiswaan';
+
+    public function isKemahasiswaan(): bool
+    {
+        return $this->isActive() && $this->role === self::ROLE_KEMAHASISWAAN;
+    }
+
+    public function isPengurusUkm(): bool
+    {
+        return $this->isActive() && ($this->role === self::ROLE_PENGURUS_UKM
+            || ($this->role !== self::ROLE_KEMAHASISWAAN && $this->ukm_id !== null && $this->jabatan_ukm !== null));
+    }
+
+    public function isKetuaUkm(?Ukm $ukm = null): bool
+    {
+        return $this->isPengurusUkm()
+            && $this->jabatan_ukm === 'ketua'
+            && ($ukm === null || (int) $this->ukm_id === (int) $ukm->id);
+    }
+
+    public function isPengurusInti(?Ukm $ukm = null): bool
+    {
+        return $this->isPengurusUkm()
+            && $this->jabatan_ukm === 'inti'
+            && ($ukm === null || (int) $this->ukm_id === (int) $ukm->id);
+    }
+
+    public function canManageTeam(?Ukm $ukm = null): bool
+    {
+        return $this->isPengurusInti($ukm) && $this->isActive();
+    }
+
+    public function isMahasiswa(): bool
+    {
+        return $this->isActive() && ($this->role === self::ROLE_MAHASISWA || $this->role === self::ROLE_PENGURUS_UKM);
+    }
+
+    public function canManageUkm(?Ukm $ukm = null): bool
+    {
+        if ($this->isKemahasiswaan()) {
+            return true;
+        }
+
+        if ($this->isPengurusUkm() && $ukm !== null) {
+            return (int) $this->ukm_id === (int) $ukm->id;
+        }
+
+        return false;
+    }
+
+    public function roleLabel(): string
+    {
+        if ($this->isKetuaUkm()) {
+            return 'Ketua UKM';
+        }
+
+        if ($this->isPengurusInti()) {
+            return 'Pengurus Inti';
+        }
+
+        if ($this->jabatan_ukm === 'divisi') {
+            return 'Pengurus Divisi';
+        }
+
+        return match ($this->role) {
+            self::ROLE_KEMAHASISWAAN => 'Bagian Kemahasiswaan',
+            self::ROLE_PENGURUS_UKM => 'Pengurus UKM',
+            self::ROLE_MAHASISWA => 'Mahasiswa',
+            default => ucfirst(str_replace('_', ' ', (string) $this->role)),
+        };
     }
 
     public function ukm(): BelongsTo
     {
         return $this->belongsTo(Ukm::class);
+    }
+
+    public function divisiUkm(): BelongsTo
+    {
+        return $this->belongsTo(DivisiUkm::class);
+    }
+
+    public function isActive(): bool
+    {
+        return (bool) ($this->akun_aktif ?? true);
     }
 
     public function pendaftaranAnggota(): HasMany

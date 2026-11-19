@@ -16,18 +16,34 @@
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
-            </flux:sidebar.nav>
 
-            <flux:spacer />
+                @if (auth()->user()->isMahasiswa())
+                    <flux:sidebar.group heading="Kegiatan Saya" class="grid">
+                        <flux:sidebar.item icon="ticket" :href="route('tiket.index')" :current="request()->routeIs('tiket.*')" wire:navigate>
+                            Tiket Saya
+                        </flux:sidebar.item>
+                    </flux:sidebar.group>
+                @endif
 
-            <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
-                </flux:sidebar.item>
+                <flux:sidebar.group :heading="auth()->user()->isKemahasiswaan() ? 'Administrasi' : 'Ruang Pengurus'" class="grid">
+                    @if (auth()->user()->isKemahasiswaan())
+                        <flux:sidebar.item icon="building-library" :href="route('ukm.index')" :current="request()->routeIs('ukm.index')" wire:navigate>Data UKM</flux:sidebar.item>
+                    @else
+                        @if (auth()->user()->isKetuaUkm())
+                            <flux:sidebar.item icon="building-library" :href="route('ukm.profile')" :current="request()->routeIs('ukm.profile')" wire:navigate>Profil UKM</flux:sidebar.item>
+                        @endif
+                        @if (auth()->user()->canManageTeam())
+                            <flux:sidebar.item icon="users" :href="route('ukm.team')" :current="request()->routeIs('ukm.team')" wire:navigate>Divisi &amp; Pengurus</flux:sidebar.item>
+                        @endif
+                        <flux:sidebar.item icon="magnifying-glass" :href="route('ukm.catalog')" :current="request()->routeIs('ukm.catalog')" wire:navigate>Katalog UKM</flux:sidebar.item>
+                    @endif
 
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
-                </flux:sidebar.item>
+                    @can('viewAny', App\Models\User::class)
+                        <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" wire:navigate>
+                            User &amp; Role
+                        </flux:sidebar.item>
+                    @endcan
+                </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />

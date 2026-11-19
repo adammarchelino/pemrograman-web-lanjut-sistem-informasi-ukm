@@ -19,6 +19,17 @@
                 :placeholder="__('Full name')"
             />
 
+            <flux:input
+                name="nim"
+                :label="__('NIM')"
+                :value="old('nim')"
+                type="text"
+                required
+                inputmode="numeric"
+                autocomplete="username"
+                placeholder="Nomor Induk Mahasiswa"
+            />
+
             <!-- Email Address -->
             <flux:input
                 name="email"
