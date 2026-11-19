@@ -21,6 +21,9 @@
                     @if (auth()->user()->isKemahasiswaan())
                         <flux:sidebar.item icon="building-library" :href="route('ukm.index')" :current="request()->routeIs('ukm.index')" wire:navigate>Data UKM</flux:sidebar.item>
                     @else
+                        @if (auth()->user()->isMahasiswa())
+                            <flux:sidebar.item icon="ticket" :href="route('tiket.index')" :current="request()->routeIs('tiket.*')" wire:navigate>Tiket Kegiatan Saya</flux:sidebar.item>
+                        @endif
                         @if (auth()->user()->isKetuaUkm())
                             <flux:sidebar.item icon="building-library" :href="route('ukm.profile')" :current="request()->routeIs('ukm.profile')" wire:navigate>Profil UKM</flux:sidebar.item>
                         @endif
