@@ -4,8 +4,12 @@ namespace App\Livewire\Mahasiswa;
 
 use App\Models\TiketKegiatan;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Layout('layouts.app')]
+#[Title('Tiket Kegiatan Saya')]
 class DaftarTiket extends Component
 {
     public function mount(): void

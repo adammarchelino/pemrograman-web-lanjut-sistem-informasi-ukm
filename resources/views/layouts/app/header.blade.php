@@ -16,6 +16,11 @@
                 <flux:navbar.item icon="building-library" :href="route('ukm.catalog')" :current="request()->routeIs('ukm.catalog')" wire:navigate>
                     Katalog UKM
                 </flux:navbar.item>
+                @if (auth()->user()->isMahasiswa())
+                    <flux:navbar.item icon="ticket" :href="route('tiket.index')" :current="request()->routeIs('tiket.*')" wire:navigate>
+                        Tiket Saya
+                    </flux:navbar.item>
+                @endif
             </flux:navbar>
 
             <flux:spacer />
@@ -38,6 +43,11 @@
                     <flux:sidebar.item icon="building-library" :href="route('ukm.catalog')" :current="request()->routeIs('ukm.catalog')" wire:navigate>
                         Katalog UKM
                     </flux:sidebar.item>
+                    @if (auth()->user()->isMahasiswa())
+                        <flux:sidebar.item icon="ticket" :href="route('tiket.index')" :current="request()->routeIs('tiket.*')" wire:navigate>
+                            Tiket Saya
+                        </flux:sidebar.item>
+                    @endif
                 </flux:sidebar.group>
             </flux:sidebar.nav>
         </flux:sidebar>

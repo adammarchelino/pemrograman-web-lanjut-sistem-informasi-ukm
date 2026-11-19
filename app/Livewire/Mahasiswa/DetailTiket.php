@@ -3,8 +3,12 @@
 namespace App\Livewire\Mahasiswa;
 
 use App\Models\TiketKegiatan;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Layout('layouts.app')]
+#[Title('Detail Tiket Kegiatan')]
 class DetailTiket extends Component
 {
     public TiketKegiatan $tiket;

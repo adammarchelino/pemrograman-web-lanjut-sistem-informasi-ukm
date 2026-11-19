@@ -32,6 +32,16 @@ test('penerbitan tiket bersifat idempoten dan menghasilkan format TKT dengan 32 
         ->and(TiketKegiatan::count())->toBe(1);
 });
 
+test('halaman tiket memakai navigasi mahasiswa dan menampilkan tautan tiket', function () {
+    $mahasiswa = User::factory()->create(['role' => 'mahasiswa']);
+
+    $this->actingAs($mahasiswa)
+        ->get(route('tiket.index'))
+        ->assertOk()
+        ->assertSee('Tiket Saya')
+        ->assertSee('Tiket Kegiatan Saya');
+});
+
 test('check-in berhasil oleh pengurus UKM yang benar dan mencatat kolom presensi dengan tepat', function () {
     $ukm = Ukm::factory()->create();
     $pengurus = User::factory()->create(['role' => 'pengurus_ukm', 'ukm_id' => $ukm->id]);
