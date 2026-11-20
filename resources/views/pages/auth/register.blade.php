@@ -1,27 +1,26 @@
-<x-layouts::auth :title="__('Register')">
+<x-layouts::auth :title="__('Daftar')">
     <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+        <x-auth-header title="Buat akun mahasiswa" description="Isi data diri sesuai kartu mahasiswa. Akun pengurus UKM dibuat oleh Bagian Kemahasiswaan." />
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+        <x-auth-session-status :status="session('status')" />
 
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-5">
             @csrf
-            <!-- Name -->
+
             <flux:input
                 name="name"
-                :label="__('Name')"
+                label="Nama lengkap"
                 :value="old('name')"
                 type="text"
                 required
                 autofocus
                 autocomplete="name"
-                :placeholder="__('Full name')"
+                placeholder="Nama sesuai kartu mahasiswa"
             />
 
             <flux:input
                 name="nim"
-                :label="__('NIM')"
+                label="NIM"
                 :value="old('nim')"
                 type="text"
                 required
@@ -30,51 +29,46 @@
                 placeholder="Nomor Induk Mahasiswa"
             />
 
-            <!-- Email Address -->
             <flux:input
                 name="email"
-                :label="__('Email address')"
+                label="Email"
                 :value="old('email')"
                 type="email"
                 required
                 autocomplete="email"
-                placeholder="email@example.com"
+                placeholder="nama@poliwangi.ac.id"
             />
 
-            <!-- Password -->
             <flux:input
                 name="password"
-                :label="__('Password')"
+                label="Kata sandi"
                 type="password"
                 required
                 autocomplete="new-password"
-                :placeholder="__('Password')"
+                placeholder="Minimal 8 karakter"
                 passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
                 viewable
             />
 
-            <!-- Confirm Password -->
             <flux:input
                 name="password_confirmation"
-                :label="__('Confirm password')"
+                label="Ulangi kata sandi"
                 type="password"
                 required
                 autocomplete="new-password"
-                :placeholder="__('Confirm password')"
+                placeholder="Ketik ulang kata sandi"
                 passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
                 viewable
             />
 
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
-                    {{ __('Create account') }}
-                </flux:button>
-            </div>
+            <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
+                Buat akun
+            </flux:button>
         </form>
 
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+        <div class="border-t border-slate-200 pt-5 text-center text-sm text-slate-600 dark:border-white/10 dark:text-zinc-400">
+            <span>Sudah punya akun?</span>
+            <flux:link :href="route('login')" wire:navigate class="font-medium">Masuk</flux:link>
         </div>
     </div>
 </x-layouts::auth>

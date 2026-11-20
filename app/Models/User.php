@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
@@ -30,7 +31,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password', 'nim', 'role', 'ukm_id', 'akun_aktif', 'jabatan_ukm', 'divisi_ukm_id', 'wajib_ganti_password', 'email_verified_at'])]
+#[Fillable(['name', 'email', 'foto_profil', 'password', 'nim', 'role', 'ukm_id', 'akun_aktif', 'jabatan_ukm', 'divisi_ukm_id', 'wajib_ganti_password', 'email_verified_at'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
@@ -166,6 +167,18 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     public function presensiDicatat(): HasMany
     {
         return $this->hasMany(Presensi::class, 'dicatat_oleh');
+    }
+
+    /**
+     * URL foto profil; null bila pengguna belum mengunggah foto.
+     */
+    public function fotoProfilUrl(): ?string
+    {
+        if (blank($this->foto_profil)) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->foto_profil);
     }
 
     /**

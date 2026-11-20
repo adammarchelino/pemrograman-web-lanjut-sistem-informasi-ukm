@@ -1,110 +1,141 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
-            <flux:sidebar.header>
-                <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
-                <flux:sidebar.collapse class="lg:hidden" />
-            </flux:sidebar.header>
+    <body class="min-h-svh bg-slate-100/80 antialiased dark:bg-zinc-950">
+        @php($user = auth()->user())
 
-            <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </flux:sidebar.item>
-                </flux:sidebar.group>
+        <a href="#konten" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-navy-950 focus:shadow-lg">
+            Lewati ke konten
+        </a>
 
-                @if (auth()->user()->isMahasiswa())
-                    <flux:sidebar.group heading="Kegiatan Saya" class="grid">
-                        <flux:sidebar.item icon="ticket" :href="route('tiket.index')" :current="request()->routeIs('tiket.*')" wire:navigate>
-                            Tiket Saya
-                        </flux:sidebar.item>
-                    </flux:sidebar.group>
-                @endif
+        <div class="min-h-svh lg:flex">
+            <aside id="app-sidebar" class="app-sidebar fixed inset-y-0 left-0 z-40 hidden w-72 flex-col bg-navy-950 text-white transition-[width] duration-200 lg:flex">
+                <div class="app-sidebar-header flex h-16 shrink-0 items-center border-b border-white/10 px-5">
+                    <x-app-logo :sidebar="true" :href="route('dashboard')" wire:navigate />
+                </div>
 
-                <flux:sidebar.group :heading="auth()->user()->isKemahasiswaan() ? 'Administrasi' : 'Ruang Pengurus'" class="grid">
-                    @if (auth()->user()->isKemahasiswaan())
-                        <flux:sidebar.item icon="building-library" :href="route('ukm.index')" :current="request()->routeIs('ukm.index')" wire:navigate>Data UKM</flux:sidebar.item>
-                    @else
-                        @if (auth()->user()->isKetuaUkm())
-                            <flux:sidebar.item icon="building-library" :href="route('ukm.profile')" :current="request()->routeIs('ukm.profile')" wire:navigate>Profil UKM</flux:sidebar.item>
-                        @endif
-                        @if (auth()->user()->canManageTeam())
-                            <flux:sidebar.item icon="users" :href="route('ukm.team')" :current="request()->routeIs('ukm.team')" wire:navigate>Divisi &amp; Pengurus</flux:sidebar.item>
-                        @endif
-                        <flux:sidebar.item icon="magnifying-glass" :href="route('ukm.catalog')" :current="request()->routeIs('ukm.catalog')" wire:navigate>Katalog UKM</flux:sidebar.item>
-                    @endif
+                <div class="flex-1 overflow-y-auto px-3 py-6">
+                    @include('layouts.app.nav')
+                </div>
 
-                    @can('viewAny', App\Models\User::class)
-                        <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" wire:navigate>
-                            User &amp; Role
-                        </flux:sidebar.item>
-                    @endcan
-                </flux:sidebar.group>
-            </flux:sidebar.nav>
-
-            <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
-        </flux:sidebar>
-
-        <!-- Mobile User Menu -->
-        <flux:header class="lg:hidden">
-            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
-
-            <flux:spacer />
-
-            <flux:dropdown position="top" align="end">
-                <flux:profile
-                    :initials="auth()->user()->initials()"
-                    icon-trailing="chevron-down"
-                />
-
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <flux:avatar
-                                    :name="auth()->user()->name"
-                                    :initials="auth()->user()->initials()"
-                                />
-
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
-                                    <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
-                                </div>
+                <div class="app-sidebar-footer shrink-0 border-t border-white/10 p-3">
+                    <div class="app-user-card rounded-lg bg-white/5 px-3 py-2">
+                        <div class="app-user-identity flex items-center gap-3">
+                            <x-user-avatar :user="$user" size="size-9" font="text-xs" />
+                            <div class="app-user-text min-w-0 flex-1">
+                                <p class="truncate text-sm font-medium text-white">{{ $user->name }}</p>
+                                <p class="truncate text-xs text-blue-200/70">{{ $user->roleLabel() }}</p>
                             </div>
                         </div>
-                    </flux:menu.radio.group>
 
-                    <flux:menu.separator />
+                        <div class="app-user-actions mt-2 flex items-center gap-1.5">
+                            <x-theme-toggle tone="navy" label="Tema" />
 
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
-                            {{ __('Settings') }}
-                        </flux:menu.item>
-                    </flux:menu.radio.group>
+                            <button
+                                type="button"
+                                data-sidebar-collapse
+                                aria-expanded="true"
+                                aria-controls="app-sidebar"
+                                aria-label="Ciutkan sidebar"
+                                title="Ciutkan sidebar"
+                                class="inline-flex h-9 shrink-0 flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-2 text-xs font-medium text-white transition-colors hover:border-white/40 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                            >
+                                <flux:icon name="chevron-left" class="app-collapse-icon size-4 shrink-0" />
+                                <flux:icon name="chevron-right" class="app-expand-icon size-4 shrink-0" />
+                                <span class="app-nav-label truncate">Ciutkan</span>
+                            </button>
+                        </div>
+                    </div>
 
-                    <flux:menu.separator />
+                    <div class="app-user-links mt-1 flex items-center gap-1">
+                        <a href="{{ route('profile.edit') }}" title="Pengaturan" class="flex flex-1 items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-blue-100/75 transition-colors hover:bg-white/10 hover:text-white" wire:navigate>
+                            <flux:icon name="cog" class="size-3.5 shrink-0" />
+                            <span class="app-nav-label">Pengaturan</span>
+                        </a>
 
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item
-                            as="button"
-                            type="submit"
-                            icon="arrow-right-start-on-rectangle"
-                            class="w-full cursor-pointer"
-                            data-test="logout-button"
-                        >
-                            {{ __('Log out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown>
-        </flux:header>
+                        <form method="POST" action="{{ route('logout') }}" class="flex-1">
+                            @csrf
+                            <button type="submit" data-test="logout-button" title="Keluar" class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-blue-100/75 transition-colors hover:bg-white/10 hover:text-white">
+                                <flux:icon name="arrow-right-start-on-rectangle" class="size-3.5 shrink-0" />
+                                <span class="app-nav-label">Keluar</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </aside>
 
-        {{ $slot }}
+            <div class="app-content flex min-w-0 flex-1 flex-col transition-[padding] duration-200 lg:pl-72">
+                <header class="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-slate-200 bg-white/95 px-4 backdrop-blur lg:hidden dark:border-white/10 dark:bg-zinc-950/95">
+                    <x-app-logo :href="route('dashboard')" wire:navigate />
+
+                    <div class="flex items-center gap-1">
+                        <x-theme-toggle />
+
+                        <flux:dropdown position="bottom" align="end">
+                            <flux:button variant="subtle" icon="bars-2" aria-label="Buka menu navigasi" />
+
+                        <flux:menu>
+                            <div class="px-2 py-2">
+                                <p class="truncate text-sm font-semibold text-slate-900 dark:text-white">{{ $user->name }}</p>
+                                <p class="truncate text-xs text-slate-500 dark:text-zinc-400">{{ $user->roleLabel() }}</p>
+                            </div>
+
+                            <flux:menu.separator />
+
+                            <flux:menu.item icon="home" :href="route('dashboard')" wire:navigate>Dashboard</flux:menu.item>
+
+                            @if ($user->isMahasiswa())
+                                <flux:menu.item icon="building-library" :href="route('ukm.catalog')" wire:navigate>Katalog UKM</flux:menu.item>
+                            @endif
+
+                            {{-- Tiket hanya untuk mahasiswa murni; isMahasiswa() juga true untuk pengurus UKM. --}}
+                            @if ($user->role === \App\Models\User::ROLE_MAHASISWA)
+                                <flux:menu.item icon="ticket" :href="route('tiket.index')" wire:navigate>Tiket Saya</flux:menu.item>
+                            @endif
+
+                            @if ($user->isKemahasiswaan())
+                                <flux:menu.item icon="building-library" :href="route('ukm.index')" wire:navigate>Data UKM</flux:menu.item>
+                                <flux:menu.item icon="users" :href="route('users.index')" wire:navigate>User &amp; Role</flux:menu.item>
+                            @elseif ($user->isPengurusUkm())
+                                @if ($user->isKetuaUkm())
+                                    <flux:menu.item icon="building-library" :href="route('ukm.profile')" wire:navigate>Profil UKM</flux:menu.item>
+                                @endif
+                                @if ($user->canManageTeam())
+                                    <flux:menu.item icon="user-group" :href="route('ukm.team')" wire:navigate>Divisi &amp; Pengurus</flux:menu.item>
+                                @endif
+                                <flux:menu.item icon="calendar-days" :href="route('kegiatan.index')" wire:navigate>Kegiatan</flux:menu.item>
+                                <flux:menu.item icon="qr-code" :href="route('pengurus.presensi.index')" wire:navigate>Presensi</flux:menu.item>
+                            @endif
+
+                            <flux:menu.separator />
+
+                            <flux:menu.item icon="cog" :href="route('profile.edit')" wire:navigate>Pengaturan</flux:menu.item>
+
+                            <form method="POST" action="{{ route('logout') }}" class="w-full">
+                                @csrf
+                                <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full cursor-pointer" data-test="logout-button">
+                                    Keluar
+                                </flux:menu.item>
+                            </form>
+                        </flux:menu>
+                        </flux:dropdown>
+                    </div>
+                </header>
+
+                <main id="konten" class="flex-1">
+                    {{ $slot }}
+                </main>
+
+                <footer class="border-t border-slate-200 px-4 py-5 sm:px-6 lg:px-10 dark:border-white/10">
+                    <div class="flex flex-col gap-1 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:text-zinc-400">
+                        <p>SIP-UKM · Sistem Informasi Pengelolaan UKM</p>
+                        <p>Politeknik Negeri Banyuwangi</p>
+                    </div>
+                </footer>
+            </div>
+        </div>
 
         @persist('toast')
             <flux:toast.group>

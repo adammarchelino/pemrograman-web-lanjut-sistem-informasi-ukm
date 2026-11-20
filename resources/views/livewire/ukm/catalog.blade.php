@@ -1,42 +1,53 @@
-<div class="mx-auto max-w-7xl space-y-6 p-6 lg:p-8">
-    <header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-            <p class="text-sm font-semibold text-blue-700 dark:text-blue-300">Temukan komunitasmu</p>
-            <h1 class="mt-1 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Katalog UKM</h1>
-            <p class="mt-2 max-w-2xl text-sm text-slate-600 dark:text-zinc-300">Lihat unit kegiatan mahasiswa yang sedang aktif beserta status pendaftaran anggotanya.</p>
-        </div>
-        <div class="w-full sm:max-w-sm">
+<x-ui.page>
+    <x-ui.page-header
+        eyebrow="Direktori organisasi"
+        title="Katalog UKM"
+        description="Lihat unit kegiatan mahasiswa yang sedang aktif beserta status pendaftaran anggotanya."
+    />
+
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="w-full sm:max-w-md">
             <flux:input wire:model.live.debounce.300ms="search" placeholder="Cari nama atau deskripsi UKM" icon="magnifying-glass" clearable />
         </div>
-    </header>
+
+        <p class="flex items-baseline gap-2 text-sm text-slate-600 dark:text-zinc-300">
+            <span class="text-xl font-semibold tabular-nums text-navy-950 dark:text-white">{{ $ukms->total() }}</span>
+            <span>UKM aktif ditemukan</span>
+        </p>
+    </div>
 
     @if ($ukms->isEmpty())
-        <div class="rounded-2xl border border-dashed border-slate-300 p-12 text-center dark:border-zinc-700">
-            <flux:icon name="building-library" class="mx-auto size-10 text-slate-400" />
-            <h2 class="mt-3 text-lg font-semibold text-slate-900 dark:text-white">Belum ada UKM aktif</h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-zinc-400">UKM aktif akan muncul di sini.</p>
+        <div class="rounded-xl border border-dashed border-slate-300 bg-white dark:border-white/15 dark:bg-zinc-900">
+            <x-ui.empty
+                icon="building-library"
+                title="Belum ada UKM yang cocok"
+                description="Coba kata kunci lain, atau kembali lagi saat pendaftaran UKM dibuka."
+            />
         </div>
     @else
         <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             @foreach ($ukms as $ukm)
-                <article wire:key="ukm-card-{{ $ukm->id }}" class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
-                    <div class="flex items-center gap-3">
+                <article wire:key="ukm-card-{{ $ukm->id }}" class="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs transition-colors hover:border-blue-300 dark:border-white/10 dark:bg-zinc-900 dark:hover:border-blue-800">
+                    <div class="flex items-center gap-3 border-b border-slate-100 p-5 dark:border-white/10">
                         @if ($ukm->logoUrl())
-                            <img src="{{ $ukm->logoUrl() }}" alt="Logo {{ $ukm->nama }}" class="size-14 rounded-xl border border-slate-200 object-cover dark:border-zinc-700">
+                            <img src="{{ $ukm->logoUrl() }}" alt="Logo {{ $ukm->nama }}" class="size-12 shrink-0 rounded-lg border border-slate-200 object-cover dark:border-white/10" loading="lazy">
                         @else
-                            <div class="flex size-14 items-center justify-center rounded-xl bg-blue-50 text-lg font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">{{ $ukm->inisial() }}</div>
+                            <div class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-navy-950 text-sm font-semibold text-white">{{ $ukm->inisial() }}</div>
                         @endif
+
                         <div class="min-w-0">
-                            <h2 class="font-semibold text-slate-900 dark:text-white">{{ $ukm->nama }}</h2>
-                            <flux:badge size="sm" variant="pill" :color="$ukm->isPendaftaranDibuka() ? 'emerald' : 'zinc'">
+                            <h2 class="line-clamp-2 text-base font-semibold leading-snug text-slate-950 dark:text-white">{{ $ukm->nama }}</h2>
+                            <x-ui.badge :tone="$ukm->isPendaftaranDibuka() ? 'positive' : 'negative'" class="mt-1.5">
                                 Pendaftaran {{ $ukm->isPendaftaranDibuka() ? 'dibuka' : 'ditutup' }}
-                            </flux:badge>
+                            </x-ui.badge>
                         </div>
                     </div>
-                    <p class="mt-4 flex-1 text-sm leading-6 text-slate-600 dark:text-zinc-300">{{ $ukm->deskripsi ?: 'Deskripsi UKM belum tersedia.' }}</p>
+
+                    <p class="flex-1 p-5 text-sm leading-6 text-slate-600 dark:text-zinc-400">{{ $ukm->deskripsi ?: 'Deskripsi UKM belum tersedia.' }}</p>
                 </article>
             @endforeach
         </section>
+
         <div>{{ $ukms->links() }}</div>
     @endif
-</div>
+</x-ui.page>

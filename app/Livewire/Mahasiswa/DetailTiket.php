@@ -3,19 +3,24 @@
 namespace App\Livewire\Mahasiswa;
 
 use App\Models\TiketKegiatan;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
-#[Title('Detail Tiket Kegiatan')]
+#[Title('Detail Tiket Acara')]
 class DetailTiket extends Component
 {
     public TiketKegiatan $tiket;
 
     public function mount(string $kode_tiket): void
     {
-        // 1. Cari tiket berdasarkan kode_tiket (bukan ID angka) beserta data relasinya
+        // 1. Tiket peserta hanya untuk mahasiswa murni, dicek sebelum data tiket diambil.
+        abort_unless(Auth::user()?->role === User::ROLE_MAHASISWA, 403);
+
+        // 2. Cari tiket berdasarkan kode_tiket (bukan ID angka) beserta data relasinya
         $this->tiket = TiketKegiatan::with([
             'registrasiKegiatan.kegiatan.ukm',
             'registrasiKegiatan.user',
@@ -24,7 +29,7 @@ class DetailTiket extends Component
             ->where('kode_tiket', $kode_tiket)
             ->firstOrFail();
 
-        // 2. Jalankan pengecekan hak akses di TiketKegiatanPolicy::view()
+        // 3. Pastikan tiket benar milik mahasiswa yang sedang masuk (TiketKegiatanPolicy::view)
         $this->authorize('view', $this->tiket);
     }
 

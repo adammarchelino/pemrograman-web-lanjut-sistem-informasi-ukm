@@ -39,7 +39,7 @@ test('halaman tiket memakai navigasi mahasiswa dan menampilkan tautan tiket', fu
         ->get(route('tiket.index'))
         ->assertOk()
         ->assertSee('Tiket Saya')
-        ->assertSee('Tiket Kegiatan Saya');
+        ->assertSee('Tiket Acara Saya');
 });
 
 test('check-in berhasil oleh pengurus UKM yang benar dan mencatat kolom presensi dengan tepat', function () {

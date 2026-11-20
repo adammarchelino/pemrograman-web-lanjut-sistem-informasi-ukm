@@ -1,12 +1,12 @@
 <div class="max-w-5xl mx-auto p-6 space-y-6">
     <div>
-        <flux:heading size="xl">Tiket Kegiatan Saya</flux:heading>
-        <flux:text>Daftar e-tiket kegiatan UKM yang Anda ikuti.</flux:text>
+        <flux:heading size="xl">Tiket Acara Saya</flux:heading>
+        <flux:text>Daftar e-tiket acara UKM yang Anda ikuti.</flux:text>
     </div>
 
     @if ($daftarTiket->isEmpty())
         <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 p-8 text-center">
-            <flux:text>Belum ada tiket kegiatan yang diterbitkan untuk akun Anda.</flux:text>
+            <flux:text>Belum ada tiket acara yang diterbitkan untuk akun Anda.</flux:text>
         </div>
     @else
         <div class="grid gap-4 md:grid-cols-2">
@@ -20,7 +20,7 @@
                 <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-5 flex flex-col justify-between space-y-4">
                     <div class="space-y-2">
                         <div class="flex items-center justify-between gap-2">
-                            <span class="text-xs font-medium text-zinc-500">
+                            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                                 {{ $kegiatan?->ukm?->nama ?? 'UKM' }}
                             </span>
 
@@ -33,7 +33,7 @@
                             @endif
                         </div>
 
-                        <flux:heading size="lg">{{ $kegiatan?->nama ?? 'Kegiatan' }}</flux:heading>
+                        <flux:heading size="lg">{{ $kegiatan?->nama ?? 'Acara UKM' }}</flux:heading>
                         <flux:text class="font-mono text-xs">{{ $tiket->kode_tiket }}</flux:text>
                     </div>
 

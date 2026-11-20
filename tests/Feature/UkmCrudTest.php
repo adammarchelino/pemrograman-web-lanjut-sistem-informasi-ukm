@@ -174,6 +174,36 @@ it('allows kemahasiswaan and the assigned chair to update the ukm profile', func
     expect($ukm->fresh()->deskripsi)->toBe('Diperbarui oleh ketua.');
 });
 
+it('keeps the ukm name locked for the chair while allowing description and logo updates', function () {
+    Storage::fake('public');
+    $ukm = Ukm::factory()->create([
+        'nama' => 'UKM Fotografi',
+        'deskripsi' => 'Lama',
+        'status' => 'aktif',
+    ]);
+    $ketua = User::factory()->create([
+        'role' => 'pengurus_ukm',
+        'jabatan_ukm' => 'ketua',
+        'ukm_id' => $ukm->id,
+    ]);
+
+    Livewire::actingAs($ketua)
+        ->test(UkmProfile::class)
+        ->assertSet('form', ['deskripsi' => 'Lama'])
+        ->set('form.deskripsi', 'Deskripsi dari ketua.')
+        ->set('logoUpload', UploadedFile::fake()->image('logo.png', 100, 100))
+        ->call('save')
+        ->assertHasNoErrors();
+
+    $ukm->refresh();
+
+    expect($ukm->nama)->toBe('UKM Fotografi')
+        ->and($ukm->deskripsi)->toBe('Deskripsi dari ketua.')
+        ->and($ukm->logo)->toStartWith('ukm-logos/');
+
+    Storage::disk('public')->assertExists($ukm->logo);
+});
+
 it('prevents pengurus ukm from creating new ukm or updating other ukm', function () {
     $ukmA = Ukm::factory()->create(['nama' => 'UKM A']);
     $ukmB = Ukm::factory()->create(['nama' => 'UKM B']);

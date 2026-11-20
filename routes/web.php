@@ -1,32 +1,38 @@
-
 <?php
-
-use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Account\ChangePassword;
 use App\Livewire\Dashboard\Index as DashboardIndex;
+use App\Livewire\Kegiatan\Index as KegiatanIndex;
 use App\Livewire\Mahasiswa\DaftarTiket;
 use App\Livewire\Mahasiswa\DetailTiket;
+use App\Livewire\Pengurus\PresensiIndex;
 use App\Livewire\Pengurus\PresensiKegiatan;
 use App\Livewire\Ukm\Catalog as UkmCatalog;
 use App\Livewire\Ukm\Index as UkmIndex;
 use App\Livewire\Ukm\Profile as UkmProfile;
 use App\Livewire\Ukm\Team as UkmTeam;
 use App\Livewire\Users\Index as UserIndex;
+use App\Models\Ukm;
+use Illuminate\Support\Facades\Route;
 
-// Fitur Manajemen Kegiatan milikmu
-use App\Livewire\Kegiatan\Index as KegiatanIndex;
+Route::get('/', function () {
+    $ukmAktif = Ukm::query()
+        ->where('status', Ukm::STATUS_AKTIF)
+        ->orderBy('nama')
+        ->get(['id', 'nama', 'logo', 'deskripsi', 'status_pendaftaran_anggota']);
 
-
-// Halaman utama
-Route::view('/', 'welcome')->name('home');
-
+    return view('welcome', [
+        'ukm' => $ukmAktif,
+        'totalUkm' => Ukm::query()->count(),
+        'totalAktif' => $ukmAktif->count(),
+        'pendaftaranDibuka' => $ukmAktif->where('status_pendaftaran_anggota', Ukm::OPREC_DIBUKA)->count(),
+    ]);
+})->name('home');
 
 // Ganti password akun
 Route::middleware(['auth', 'account.active'])
     ->get('account/password/change', ChangePassword::class)
     ->name('account.password.change');
-
 
 // Halaman yang memerlukan autentikasi
 Route::middleware([
@@ -68,6 +74,10 @@ Route::middleware([
 
     Route::get('/tiket-saya/{kode_tiket}', DetailTiket::class)
         ->name('tiket.show');
+
+    // Daftar acara untuk presensi pengurus UKM
+    Route::get('/pengurus/presensi', PresensiIndex::class)
+        ->name('pengurus.presensi.index');
 
     // Validasi dan rekap presensi pengurus UKM
     Route::get(

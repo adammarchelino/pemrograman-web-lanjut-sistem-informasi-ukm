@@ -23,13 +23,13 @@
 
     <div class="rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 space-y-6 text-center shadow-sm">
         <div class="space-y-1">
-            <span class="text-xs uppercase tracking-wider text-zinc-500">{{ $kegiatan->ukm->nama ?? 'UKM' }}</span>
+            <span class="text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{{ $kegiatan->ukm->nama ?? 'UKM' }}</span>
             <flux:heading size="xl">{{ $kegiatan->nama }}</flux:heading>
             <flux:text>{{ $kegiatan->lokasi ?? '-' }}</flux:text>
         </div>
 
         {{-- Wadah QR Code yang dirender oleh JavaScript di app.js --}}
-        <div class="flex justify-center py-4 bg-white rounded-xl border border-zinc-100" wire:ignore>
+        <div class="flex justify-center py-4 bg-white rounded-xl border border-zinc-100 dark:border-zinc-800" wire:ignore>
             <canvas id="qr-tiket-canvas"></canvas>
         </div>
 
@@ -40,15 +40,15 @@
 
         <div class="border-t border-zinc-200 dark:border-zinc-700 pt-4 text-left text-sm space-y-2">
             <div class="flex justify-between">
-                <span class="text-zinc-500">Nama Peserta</span>
+                <span class="text-zinc-500 dark:text-zinc-400">Nama Peserta</span>
                 <span class="font-medium">{{ $namaPeserta }}</span>
             </div>
             <div class="flex justify-between">
-                <span class="text-zinc-500">NIM</span>
+                <span class="text-zinc-500 dark:text-zinc-400">NIM</span>
                 <span class="font-medium">{{ $nim ?? '-' }}</span>
             </div>
             <div class="flex justify-between">
-                <span class="text-zinc-500">Diterbitkan Pada</span>
+                <span class="text-zinc-500 dark:text-zinc-400">Diterbitkan Pada</span>
                 <span class="font-medium">{{ $tiket->diterbitkan_pada }}</span>
             </div>
         </div>

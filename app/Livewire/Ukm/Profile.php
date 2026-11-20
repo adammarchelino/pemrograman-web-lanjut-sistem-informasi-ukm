@@ -7,7 +7,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -20,7 +19,11 @@ class Profile extends Component
 {
     use WithFileUploads;
 
-    public array $form = ['nama' => '', 'deskripsi' => ''];
+    /**
+     * Nama dan status UKM adalah kewenangan Kemahasiswaan. Ketua UKM hanya
+     * mengelola deskripsi dan logo, sehingga nama tidak pernah masuk state form.
+     */
+    public array $form = ['deskripsi' => ''];
 
     public ?TemporaryUploadedFile $logoUpload = null;
 
@@ -30,7 +33,7 @@ class Profile extends Component
     {
         $ukm = $this->managedUkm();
         $this->authorize('update', $ukm);
-        $this->form = ['nama' => $ukm->nama, 'deskripsi' => (string) $ukm->deskripsi];
+        $this->form = ['deskripsi' => (string) $ukm->deskripsi];
         $this->logoPreview = $ukm->logoUrl();
     }
 
@@ -44,13 +47,12 @@ class Profile extends Component
         $ukm = $this->managedUkm();
         $this->authorize('update', $ukm);
         $this->validate([
-            'form.nama' => ['required', 'string', 'max:150', Rule::unique('ukm', 'nama')->ignore($ukm->id)],
             'form.deskripsi' => ['required', 'string'],
             'logoUpload' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
         $previousLogo = $ukm->logo;
-        $payload = ['nama' => $this->form['nama'], 'deskripsi' => $this->form['deskripsi']];
+        $payload = ['deskripsi' => $this->form['deskripsi']];
         if ($this->logoUpload) {
             $path = $this->logoUpload->storePublicly('ukm-logos', 'public');
             if (! $path) {

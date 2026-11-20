@@ -1,12 +1,12 @@
 <div class="max-w-6xl mx-auto p-6 space-y-6">
     <div>
-        <flux:heading size="xl">Presensi Kegiatan: {{ $kegiatan->nama }}</flux:heading>
-        <flux:text>Validasi kode tiket peserta dan pantau rekapitulasi kehadiran.</flux:text>
+        <flux:heading size="xl">Presensi Acara: {{ $kegiatan->nama }}</flux:heading>
+        <flux:text>Validasi tiket peserta acara UKM dan pantau rekapitulasi kehadiran.</flux:text>
     </div>
 
     {{-- Form Validasi / Input Scan Tiket --}}
     <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 space-y-4">
-        <flux:heading size="lg">Validasi Tiket Peserta</flux:heading>
+        <flux:heading size="lg">Validasi Tiket Acara</flux:heading>
 
         <form wire:submit="prosesCheckIn" class="flex flex-col sm:flex-row gap-3 items-start">
             <div class="w-full sm:flex-1">
@@ -32,7 +32,7 @@
         </div>
         <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-5">
             <flux:text class="text-xs">Hadir</flux:text>
-            <p class="text-2xl font-bold mt-1 text-green-600">{{ $totalHadir }}</p>
+            <p class="text-2xl font-bold mt-1 text-green-600 dark:text-green-400">{{ $totalHadir }}</p>
         </div>
         <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-5">
             <flux:text class="text-xs">Persentase Kehadiran</flux:text>
@@ -109,7 +109,7 @@
                     </flux:table.row>
                 @empty
                     <flux:table.row>
-                        <flux:table.cell colspan="6" class="text-center text-zinc-500 py-6">
+                        <flux:table.cell colspan="6" class="text-center text-zinc-500 dark:text-zinc-400 py-6">
                             Tidak ada data peserta untuk filter ini.
                         </flux:table.cell>
                     </flux:table.row>

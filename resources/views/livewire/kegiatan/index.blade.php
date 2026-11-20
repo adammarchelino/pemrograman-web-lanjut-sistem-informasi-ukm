@@ -1,445 +1,251 @@
-<div class="p-6 space-y-6">
-
-    <div class="flex items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold">
-                Manajemen Kegiatan UKM
-            </h1>
-            <p class="text-sm text-gray-500 mt-1">
-                Kelola kegiatan Unit Kegiatan Mahasiswa
-            </p>
-        </div>
-
+<x-ui.page>
+    <x-ui.page-header
+        eyebrow="Ruang pengurus"
+        title="Kegiatan UKM"
+        :description="$bolehKelola
+            ? 'Kelola jadwal, kapasitas peserta, dan status publikasi kegiatan UKM.'
+            : 'Daftar kegiatan UKM yang sudah dipublikasikan.'"
+    >
         @if ($bolehKelola)
-        <button
-            type="button"
-            wire:click="bukaForm"
-            class="rounded-lg bg-blue-600 px-4 py-2
-                       text-white hover:bg-blue-700">
-            + Tambah Kegiatan
-        </button>
+            <x-slot:actions>
+                <flux:button variant="primary" icon="plus" wire:click="bukaForm">
+                    Tambah Kegiatan
+                </flux:button>
+            </x-slot:actions>
         @endif
-    </div>
+    </x-ui.page-header>
 
     @if (session()->has('success'))
-    <div class="rounded-lg bg-green-100 p-4
-                    text-green-800">
-        {{ session('success') }}
-    </div>
+        <div role="status" class="flex items-start gap-3 rounded-[3px] border border-moss-700/30 bg-moss-50 px-4 py-3 text-sm text-moss-700 dark:border-moss-700/50 dark:bg-moss-700/15 dark:text-moss-50">
+            <flux:icon name="check-circle" class="mt-0.5 size-4 shrink-0" />
+            <p>{{ session('success') }}</p>
+        </div>
     @endif
 
-    @if ($tampilkanForm && $bolehKelola)
-    <div class="rounded-xl border p-6">
-        <h2 class="text-xl font-semibold mb-5">
-            {{ $editKegiatanId ? 'Form Edit Kegiatan' : 'Form Tambah Kegiatan' }}
-        </h2>
+    <x-ui.panel flush>
+        <div class="overflow-x-auto px-4">
+            <table class="w-full min-w-[960px] table-fixed text-left text-sm">
+                <thead>
+                    <tr class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                        <th scope="col" class="w-[4%] border-b border-slate-200 py-3 pe-3 text-start font-semibold dark:border-white/10">No</th>
+                        <th scope="col" class="w-[18%] border-b border-slate-200 py-3 pe-3 text-start font-semibold dark:border-white/10">Kegiatan</th>
+                        <th scope="col" class="w-[12%] border-b border-slate-200 py-3 pe-3 text-start font-semibold dark:border-white/10">UKM</th>
+                        <th scope="col" class="w-[13%] border-b border-slate-200 py-3 pe-3 text-start font-semibold dark:border-white/10">Jadwal</th>
+                        <th scope="col" class="w-[11%] border-b border-slate-200 py-3 pe-3 text-start font-semibold dark:border-white/10">Lokasi</th>
+                        <th scope="col" class="w-[6%] border-b border-slate-200 py-3 pe-3 text-start font-semibold dark:border-white/10">Peserta</th>
+                        <th scope="col" class="w-[11%] border-b border-slate-200 py-3 pe-3 text-start font-semibold dark:border-white/10">Status</th>
+                        <th scope="col" class="w-[25%] border-b border-slate-200 py-3 text-end font-semibold dark:border-white/10">Aksi</th>
+                    </tr>
+                </thead>
 
-        <form wire:submit="simpan" class="space-y-4">
+                <tbody>
+                    @forelse ($kegiatan as $item)
+                        <tr wire:key="kegiatan-{{ $item->id }}" class="border-b border-slate-100 transition-colors last:border-0 hover:bg-slate-50/80 dark:border-white/5 dark:hover:bg-white/5">
+                            <td class="py-3.5 pe-3 align-middle text-xs tabular-nums text-slate-500 dark:text-zinc-400">
+                                {{ $loop->iteration }}
+                            </td>
 
+                            <td class="py-3.5 pe-3 align-middle">
+                                <div class="truncate text-sm font-medium text-slate-950 dark:text-white">{{ $item->nama }}</div>
+                                @if ($item->deskripsi)
+                                    <div class="truncate text-xs text-slate-500 dark:text-zinc-400">{{ Str::limit($item->deskripsi, 70) }}</div>
+                                @endif
+                            </td>
+
+                            <td class="py-3.5 pe-3 align-middle text-xs text-slate-700 dark:text-zinc-300">
+                                {{ $item->ukm?->nama ?? '-' }}
+                            </td>
+
+                            <td class="py-3.5 pe-3 align-middle">
+                                <div class="text-xs text-slate-700 dark:text-zinc-300">
+                                    {{ $item->mulai_pada?->format('d M Y, H:i') ?? '-' }}
+                                </div>
+                                <div class="text-xs text-slate-500 dark:text-zinc-400">
+                                    s.d. {{ $item->selesai_pada?->format('d M Y, H:i') ?? '-' }}
+                                </div>
+                            </td>
+
+                            <td class="py-3.5 pe-3 align-middle text-xs text-slate-700 dark:text-zinc-300">
+                                {{ $item->lokasi ?: '-' }}
+                            </td>
+
+                            <td class="py-3.5 pe-3 align-middle text-xs tabular-nums text-slate-700 dark:text-zinc-300">
+                                {{ $item->jumlah_peserta }} / {{ $item->kapasitas }}
+                            </td>
+
+                            <td class="py-3.5 pe-3 align-middle">
+                                <x-ui.badge :tone="$item->status === 'dipublikasikan' ? 'positive' : 'neutral'">
+                                    {{ $item->status === 'dipublikasikan' ? 'Dipublikasikan' : 'Draf' }}
+                                </x-ui.badge>
+                            </td>
+
+                            <td class="py-3.5 align-middle text-end">
+                                <div class="flex flex-wrap items-center justify-end gap-1">
+                                    @can('kelola-presensi', $item)
+                                        <flux:button
+                                            size="xs"
+                                            variant="subtle"
+                                            :href="route('pengurus.kegiatan.presensi', $item)"
+                                            icon="qr-code"
+                                            title="Buka presensi kegiatan"
+                                            wire:navigate
+                                        >
+                                            Presensi
+                                        </flux:button>
+                                    @endcan
+
+                                    <flux:button size="xs" variant="subtle" wire:click="lihatDetail({{ $item->id }})" icon="eye" title="Lihat detail kegiatan">
+                                        Detail
+                                    </flux:button>
+
+                                    @if ($bolehKelola)
+                                        <flux:button size="xs" variant="subtle" wire:click="editKegiatan({{ $item->id }})" icon="pencil-square" title="Ubah kegiatan">
+                                            Ubah
+                                        </flux:button>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="py-0">
+                                <x-ui.empty
+                                    icon="calendar-days"
+                                    title="Belum ada kegiatan"
+                                    description="Kegiatan yang dibuat pengurus UKM akan tampil di sini."
+                                />
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </x-ui.panel>
+
+    <flux:modal wire:model="tampilkanForm" class="max-w-2xl">
+        <form wire:submit="simpan" class="space-y-6">
             <div>
-                <label class="block mb-1">
-                    Nama Kegiatan
-                </label>
-                <input
-                    type="text"
-                    wire:model="nama"
-                    class="w-full rounded-lg border p-2"
-                    placeholder="Masukkan nama kegiatan">
-                @error('nama')
-                <p class="text-red-500 text-sm">
-                    {{ $message }}
-                </p>
-                @enderror
+                <flux:heading size="lg">{{ $editKegiatanId ? 'Ubah Kegiatan' : 'Tambah Kegiatan' }}</flux:heading>
+                <flux:subheading>
+                    {{ $editKegiatanId ? 'Perbarui jadwal dan status publikasi kegiatan.' : 'Lengkapi jadwal, lokasi, dan kapasitas kegiatan UKM.' }}
+                </flux:subheading>
             </div>
 
-            <div>
-                <label class="block mb-1">
-                    Deskripsi
-                </label>
-                <textarea
-                    wire:model="deskripsi"
-                    rows="3"
-                    class="w-full rounded-lg border p-2"
-                    placeholder="Deskripsi kegiatan"></textarea>
-                @error('deskripsi')
-                <p class="text-red-500 text-sm">
-                    {{ $message }}
-                </p>
-                @enderror
-            </div>
+            <div class="space-y-4">
+                <flux:input wire:model="nama" label="Nama Kegiatan" placeholder="Contoh: Workshop Robotika" required />
+                <flux:textarea wire:model="deskripsi" label="Deskripsi" rows="3" placeholder="Gambaran singkat kegiatan" required />
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block mb-1">
-                        Tanggal Mulai
-                    </label>
-                    <input
-                        type="datetime-local"
-                        wire:model="mulai_pada"
-                        class="w-full rounded-lg border p-2">
-                    @error('mulai_pada')
-                    <p class="text-red-500 text-sm">
-                        {{ $message }}
-                    </p>
-                    @enderror
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <flux:input wire:model="mulai_pada" type="datetime-local" label="Mulai" required />
+                    <flux:input wire:model="selesai_pada" type="datetime-local" label="Selesai" required />
                 </div>
 
-                <div>
-                    <label class="block mb-1">
-                        Tanggal Selesai
-                    </label>
-                    <input
-                        type="datetime-local"
-                        wire:model="selesai_pada"
-                        class="w-full rounded-lg border p-2">
-                    @error('selesai_pada')
-                    <p class="text-red-500 text-sm">
-                        {{ $message }}
-                    </p>
-                    @enderror
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <flux:input wire:model="lokasi" label="Lokasi" placeholder="Contoh: Aula Poliwangi" required />
+                    <flux:input wire:model="kapasitas" type="number" min="1" label="Kapasitas Peserta" required />
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <flux:input wire:model="pendaftaran_dibuka_pada" type="datetime-local" label="Pendaftaran Dibuka (opsional)" />
+                    <flux:input wire:model="pendaftaran_ditutup_pada" type="datetime-local" label="Pendaftaran Ditutup (opsional)" />
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <flux:select wire:model="audiens" label="Audiens">
+                        <option value="mahasiswa_poliwangi">Mahasiswa Poliwangi</option>
+                        <option value="umum">Umum</option>
+                    </flux:select>
+
+                    <flux:select wire:model="status" label="Status Publikasi">
+                        <option value="draf">Draf</option>
+                        <option value="dipublikasikan">Dipublikasikan</option>
+                    </flux:select>
                 </div>
             </div>
 
-            <div>
-                <label class="block mb-1">Lokasi</label>
-                <input
-                    type="text"
-                    wire:model="lokasi"
-                    class="w-full rounded-lg border p-2"
-                    placeholder="Lokasi kegiatan">
-                @error('lokasi')
-                <p class="text-red-500 text-sm">
-                    {{ $message }}
-                </p>
-                @enderror
-            </div>
+            <div class="flex justify-end gap-2 border-t border-slate-100 pt-4 dark:border-white/10">
+                <flux:modal.close>
+                    <flux:button variant="filled">Batal</flux:button>
+                </flux:modal.close>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block mb-1">
-                        Kapasitas Peserta
-                    </label>
-                    <input
-                        type="number"
-                        min="1"
-                        wire:model="kapasitas"
-                        class="w-full rounded-lg border p-2">
-                    @error('kapasitas')
-                    <p class="text-red-500 text-sm">
-                        {{ $message }}
-                    </p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label class="block mb-1">
-                        Audiens
-                    </label>
-                    <select
-                        wire:model="audiens"
-                        class="w-full rounded-lg border p-2">
-                        <option value="mahasiswa_poliwangi">
-                            Mahasiswa Poliwangi
-                        </option>
-                        <option value="umum">
-                            Umum
-                        </option>
-                    </select>
-                    @error('audiens')
-                    <p class="text-red-500 text-sm">
-                        {{ $message }}
-                    </p>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block mb-1">
-                        Pendaftaran Dibuka
-                    </label>
-                    <input
-                        type="datetime-local"
-                        wire:model="pendaftaran_dibuka_pada"
-                        class="w-full rounded-lg border p-2">
-                    @error('pendaftaran_dibuka_pada')
-                    <p class="text-red-500 text-sm">
-                        {{ $message }}
-                    </p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label class="block mb-1">
-                        Pendaftaran Ditutup
-                    </label>
-                    <input
-                        type="datetime-local"
-                        wire:model="pendaftaran_ditutup_pada"
-                        class="w-full rounded-lg border p-2">
-                    @error('pendaftaran_ditutup_pada')
-                    <p class="text-red-500 text-sm">
-                        {{ $message }}
-                    </p>
-                    @enderror
-                </div>
-            </div>
-
-            <div>
-                <label class="block mb-1">
-                    Status Publikasi
-                </label>
-                <select
-                    wire:model="status"
-                    class="w-full rounded-lg border p-2">
-                    <option value="draf">Draf</option>
-                    <option value="dipublikasikan">
-                        Dipublikasikan
-                    </option>
-                </select>
-                @error('status')
-                <p class="text-red-500 text-sm">
-                    {{ $message }}
-                </p>
-                @enderror
-            </div>
-
-            <div class="flex gap-3 pt-4">
-                <button
-                    type="submit"
-                    wire:loading.attr="disabled"
-                    wire:target="simpan"
-                    class="rounded-lg bg-green-600
-                               px-5 py-2 text-white
-                               hover:bg-green-700
-                               disabled:opacity-50">
-                    {{ $editKegiatanId ? 'Simpan Perubahan' : 'Simpan Kegiatan' }}
-                </button>
-
-                <button
-                    type="button"
-                    wire:click="tutupForm"
-                    class="rounded-lg border px-5 py-2">
-                    Batal
-                </button>
+                <flux:button variant="primary" type="submit" wire:loading.attr="disabled">
+                    <span wire:loading.remove wire:target="simpan">{{ $editKegiatanId ? 'Simpan Perubahan' : 'Simpan Kegiatan' }}</span>
+                    <span wire:loading wire:target="simpan">Menyimpan...</span>
+                </flux:button>
             </div>
         </form>
-    </div>
-    @endif
+    </flux:modal>
 
-    <div class="overflow-x-auto rounded-xl border">
-        <table class="w-full text-sm text-left">
-            <thead class="bg-gray-100 text-gray-700">
-                <tr>
-                    <th class="p-3">No</th>
-                    <th class="p-3">Nama Kegiatan</th>
-                    <th class="p-3">UKM</th>
-                    <th class="p-3">Tanggal</th>
-                    <th class="p-3">Lokasi</th>
-                    <th class="p-3">Peserta</th>
-                    <th class="p-3">Status</th>
-                    <th class="p-3">Aksi</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @forelse ($kegiatan as $item)
-                <tr class="border-t">
-                    <td class="p-3">
-                        {{ $loop->iteration }}
-                    </td>
-                    <td class="p-3 font-medium">
-                        {{ $item->nama }}
-                    </td>
-                    <td class="p-3">
-                        {{ $item->ukm->nama }}
-                    </td>
-                    <td class="p-3">
-                        {{ $item->mulai_pada->format('d M Y H:i') }}
-                    </td>
-                    <td class="p-3">
-                        {{ $item->lokasi }}
-                    </td>
-                    <td class="p-3">
-                        {{ $item->jumlah_peserta }}
-                        /
-                        {{ $item->kapasitas }}
-                    </td>
-                    <td class="p-3">
-                        {{ ucfirst($item->status) }}
-                    </td>
-
-                    <td class="p-3">
-                        <div class="flex items-center gap-2">
-
-                            <button
-                                type="button"
-                                wire:click="lihatDetail({{ $item->id }})"
-                                class="rounded-lg bg-blue-600
-                   px-3 py-2 text-white
-                   hover:bg-blue-700">
-                                Detail
-                            </button>
-
-                            @if ($bolehKelola)
-                            <button
-                                type="button"
-                                wire:click="editKegiatan({{ $item->id }})"
-                                class="rounded-lg bg-amber-500
-                       px-3 py-2 text-white
-                       hover:bg-amber-600">
-                                Edit
-                            </button>
-                            @endif
-
-                        </div>
-                    </td>
-
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="8"
-                        class="p-6 text-center text-gray-500">
-                        Belum ada kegiatan.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-
-
+    <flux:modal wire:model="tampilkanDetail" class="max-w-xl">
         @if ($detail)
-        <div class="fixed inset-0 z-50 flex items-center
-                justify-center bg-black/70 p-4">
-
-            <div class="w-full max-w-2xl max-h-[90vh]
-                    overflow-y-auto rounded-xl
-                    bg-white p-6 text-gray-900 shadow-xl">
-
-                <div class="mb-5 flex items-center
-                        justify-between gap-3">
-                    <h2 class="text-xl font-bold">
-                        Detail Kegiatan
-                    </h2>
-
-                    <button
-                        type="button"
-                        wire:click="tutupDetail"
-                        class="rounded-lg border px-3 py-1">
-                        Tutup
-                    </button>
+            <div class="space-y-6">
+                <div>
+                    <flux:heading size="lg">Detail Kegiatan</flux:heading>
+                    <flux:subheading>{{ $detail->nama }}</flux:subheading>
                 </div>
 
-                <div class="space-y-4">
-
-                    <div>
-                        <p class="text-sm text-gray-500">
-                            Nama Kegiatan
-                        </p>
-                        <p class="font-semibold">
-                            {{ $detail->nama }}
-                        </p>
+                <dl class="grid gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2 dark:border-white/10 dark:bg-white/5">
+                    <div class="space-y-1">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">UKM</dt>
+                        <dd class="text-sm text-slate-950 dark:text-white">{{ $detail->ukm?->nama ?? '-' }}</dd>
                     </div>
 
-                    <div>
-                        <p class="text-sm text-gray-500">UKM</p>
-                        <p>{{ $detail->ukm->nama ?? '-' }}</p>
+                    <div class="space-y-1">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Lokasi</dt>
+                        <dd class="text-sm text-slate-950 dark:text-white">{{ $detail->lokasi ?: '-' }}</dd>
                     </div>
 
-                    <div>
-                        <p class="text-sm text-gray-500">
-                            Deskripsi
-                        </p>
-                        <p class="whitespace-pre-line">
-                            {{ $detail->deskripsi }}
-                        </p>
+                    <div class="space-y-1 sm:col-span-2">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Deskripsi</dt>
+                        <dd class="whitespace-pre-line text-sm leading-6 text-slate-700 dark:text-zinc-300">{{ $detail->deskripsi ?: 'Belum ada deskripsi.' }}</dd>
                     </div>
 
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div>
-                            <p class="text-sm text-gray-500">
-                                Tanggal Mulai
-                            </p>
-                            <p>
-                                {{ $detail->mulai_pada?->format('d M Y H:i') }}
-                            </p>
-                        </div>
-
-                        <div>
-                            <p class="text-sm text-gray-500">
-                                Tanggal Selesai
-                            </p>
-                            <p>
-                                {{ $detail->selesai_pada?->format('d M Y H:i') }}
-                            </p>
-                        </div>
+                    <div class="space-y-1">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Mulai</dt>
+                        <dd class="text-sm text-slate-950 dark:text-white">{{ $detail->mulai_pada?->format('d M Y, H:i') ?? '-' }}</dd>
                     </div>
 
-                    <div>
-                        <p class="text-sm text-gray-500">
-                            Lokasi
-                        </p>
-                        <p>{{ $detail->lokasi }}</p>
+                    <div class="space-y-1">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Selesai</dt>
+                        <dd class="text-sm text-slate-950 dark:text-white">{{ $detail->selesai_pada?->format('d M Y, H:i') ?? '-' }}</dd>
                     </div>
 
-                    <div>
-                        <p class="text-sm text-gray-500">
-                            Kapasitas Peserta
-                        </p>
-                        <p>{{ $detail->kapasitas }} orang</p>
+                    <div class="space-y-1">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Kapasitas</dt>
+                        <dd class="text-sm text-slate-950 dark:text-white">{{ $detail->kapasitas }} orang</dd>
                     </div>
 
-                    <div>
-                        <p class="text-sm text-gray-500">
-                            Audiens
-                        </p>
-                        <p>{{ str_replace('_', ' ', ucfirst($detail->audiens)) }}</p>
+                    <div class="space-y-1">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Audiens</dt>
+                        <dd class="text-sm text-slate-950 dark:text-white">{{ $detail->audiens === 'umum' ? 'Umum' : 'Mahasiswa Poliwangi' }}</dd>
                     </div>
 
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div>
-                            <p class="text-sm text-gray-500">
-                                Pendaftaran Dibuka
-                            </p>
-                            <p>
-                                {{ $detail->pendaftaran_dibuka_pada?->format('d M Y H:i') ?? '-' }}
-                            </p>
-                        </div>
-
-                        <div>
-                            <p class="text-sm text-gray-500">
-                                Pendaftaran Ditutup
-                            </p>
-                            <p>
-                                {{ $detail->pendaftaran_ditutup_pada?->format('d M Y H:i') ?? '-' }}
-                            </p>
-                        </div>
+                    <div class="space-y-1">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Pendaftaran Dibuka</dt>
+                        <dd class="text-sm text-slate-950 dark:text-white">{{ $detail->pendaftaran_dibuka_pada?->format('d M Y, H:i') ?? '-' }}</dd>
                     </div>
 
-                    <div>
-                        <p class="text-sm text-gray-500">
-                            Status Publikasi
-                        </p>
-                        <p class="font-semibold">
-                            {{ ucfirst($detail->status) }}
-                        </p>
+                    <div class="space-y-1">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Pendaftaran Ditutup</dt>
+                        <dd class="text-sm text-slate-950 dark:text-white">{{ $detail->pendaftaran_ditutup_pada?->format('d M Y, H:i') ?? '-' }}</dd>
                     </div>
 
+                    <div class="space-y-1 sm:col-span-2">
+                        <dt class="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Status Publikasi</dt>
+                        <dd>
+                            <x-ui.badge :tone="$detail->status === 'dipublikasikan' ? 'positive' : 'neutral'">
+                                {{ $detail->status === 'dipublikasikan' ? 'Dipublikasikan' : 'Draf' }}
+                            </x-ui.badge>
+                        </dd>
+                    </div>
+                </dl>
+
+                <div class="flex justify-end border-t border-slate-100 pt-4 dark:border-white/10">
+                    <flux:modal.close>
+                        <flux:button variant="filled">Tutup</flux:button>
+                    </flux:modal.close>
                 </div>
-
-                <div class="mt-6 flex justify-end border-t pt-4">
-                    <button
-                        type="button"
-                        wire:click="tutupDetail"
-                        class="rounded-lg bg-gray-800 px-5
-                           py-2 text-white hover:bg-gray-700">
-                        Kembali
-                    </button>
-                </div>
-
             </div>
-        </div>
         @endif
-
-    </div>
-</div>
+    </flux:modal>
+</x-ui.page>

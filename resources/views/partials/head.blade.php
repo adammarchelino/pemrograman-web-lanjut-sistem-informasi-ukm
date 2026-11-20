@@ -11,5 +11,16 @@
 
 @fonts
 
+<script>
+    // Terapkan keadaan sidebar sebelum render supaya tidak ada kedipan lebar penuh.
+    try {
+        if (window.localStorage.getItem('sip.sidebar') === 'collapsed') {
+            document.documentElement.setAttribute('data-sidebar', 'collapsed');
+        }
+    } catch (error) {
+        // localStorage bisa diblokir; biarkan sidebar dalam keadaan terbuka.
+    }
+</script>
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @fluxAppearance

@@ -1,7 +1,7 @@
-<x-layouts::auth :title="__('Two-factor authentication')">
+<x-layouts::auth :title="__('Autentikasi dua faktor')">
     <div class="flex flex-col gap-6">
         <div
-            class="relative w-full h-auto"
+            class="relative h-auto w-full"
             x-cloak
             x-data="{
                 showRecoveryInput: @js($errors->has('recovery_code')),
@@ -31,24 +31,24 @@
         >
             <div x-show="!showRecoveryInput">
                 <x-auth-header
-                    :title="__('Authentication code')"
-                    :description="__('Enter the authentication code provided by your authenticator application.')"
+                    title="Kode autentikasi"
+                    description="Masukkan kode 6 digit dari aplikasi authenticator-mu."
                 />
             </div>
 
             <div x-show="showRecoveryInput">
                 <x-auth-header
-                    :title="__('Recovery code')"
-                    :description="__('Please confirm access to your account by entering one of your emergency recovery codes.')"
+                    title="Kode pemulihan"
+                    description="Masukkan salah satu kode pemulihan darurat yang kamu simpan."
                 />
             </div>
 
             <form method="POST" action="{{ route('two-factor.login.store') }}">
                 @csrf
 
-                <div class="space-y-5 text-center">
+                <div class="mt-5 space-y-5 text-center">
                     <div x-show="!showRecoveryInput">
-                        <div class="flex items-center justify-center my-5" x-ref="otp">
+                        <div class="my-5 flex items-center justify-center" x-ref="otp">
                             <flux:otp
                                 x-model="code"
                                 length="6"
@@ -69,6 +69,7 @@
                                 x-bind:required="showRecoveryInput"
                                 autocomplete="one-time-code"
                                 x-model="recovery_code"
+                                placeholder="Kode pemulihan"
                             />
                         </div>
 
@@ -84,15 +85,15 @@
                         type="submit"
                         class="w-full"
                     >
-                        {{ __('Continue') }}
+                        Lanjutkan
                     </flux:button>
                 </div>
 
-                <div class="mt-5 space-x-0.5 text-sm leading-5 text-center">
-                    <span class="opacity-50">{{ __('or you can') }}</span>
-                    <div class="inline font-medium underline cursor-pointer opacity-80">
-                        <span x-show="!showRecoveryInput" @click="toggleInput()">{{ __('login using a recovery code') }}</span>
-                        <span x-show="showRecoveryInput" @click="toggleInput()">{{ __('login using an authentication code') }}</span>
+                <div class="mt-5 text-center text-sm leading-5">
+                    <span class="text-slate-500 dark:text-zinc-400">atau</span>
+                    <div class="mt-1 inline cursor-pointer font-medium text-blue-700 underline decoration-blue-300 underline-offset-4 dark:text-blue-300">
+                        <span x-show="!showRecoveryInput" @click="toggleInput()">masuk dengan kode pemulihan</span>
+                        <span x-show="showRecoveryInput" @click="toggleInput()">masuk dengan kode autentikasi</span>
                     </div>
                 </div>
             </form>

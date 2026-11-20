@@ -5,24 +5,41 @@ namespace App\Livewire\Kegiatan;
 use App\Models\Kegiatan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Layout('layouts.app')]
+#[Title('Kegiatan UKM · SIP-UKM')]
 class Index extends Component
 {
     public bool $tampilkanForm = false;
-    public ?int $editKegiatanId = null;
-    public ?int $detailKegiatanId = null;
-    public string $nama = '';
-    public string $deskripsi = '';
-    public string $mulai_pada = '';
-    public string $selesai_pada = '';
-    public string $lokasi = '';
-    public string $kapasitas = '';
-    public string $audiens = 'mahasiswa_poliwangi';
-    public string $pendaftaran_dibuka_pada = '';
-    public string $pendaftaran_ditutup_pada = '';
-    public string $status = 'draf';
 
+    public bool $tampilkanDetail = false;
+
+    public ?int $editKegiatanId = null;
+
+    public ?int $detailKegiatanId = null;
+
+    public string $nama = '';
+
+    public string $deskripsi = '';
+
+    public string $mulai_pada = '';
+
+    public string $selesai_pada = '';
+
+    public string $lokasi = '';
+
+    public string $kapasitas = '';
+
+    public string $audiens = 'mahasiswa_poliwangi';
+
+    public string $pendaftaran_dibuka_pada = '';
+
+    public string $pendaftaran_ditutup_pada = '';
+
+    public string $status = 'draf';
 
     public function bukaForm(): void
     {
@@ -43,8 +60,6 @@ class Index extends Component
 
         $this->tampilkanForm = true;
     }
-
-
 
     public function tutupForm(): void
     {
@@ -67,8 +82,6 @@ class Index extends Component
         $this->editKegiatanId = null;
         $this->tampilkanForm = false;
     }
-
-
 
     public function editKegiatan(int $id): void
     {
@@ -105,11 +118,11 @@ class Index extends Component
 
         $this->pendaftaran_dibuka_pada =
             $kegiatan->pendaftaran_dibuka_pada
-            ?->format('Y-m-d\TH:i') ?? '';
+                ?->format('Y-m-d\TH:i') ?? '';
 
         $this->pendaftaran_ditutup_pada =
             $kegiatan->pendaftaran_ditutup_pada
-            ?->format('Y-m-d\TH:i') ?? '';
+                ?->format('Y-m-d\TH:i') ?? '';
 
         $this->status = $kegiatan->status;
 
@@ -118,8 +131,6 @@ class Index extends Component
 
         $this->tampilkanForm = true;
     }
-
-
 
     public function simpan(): void
     {
@@ -218,8 +229,6 @@ class Index extends Component
         session()->flash('success', $pesan);
     }
 
-
-
     public function lihatDetail(int $id): void
     {
         $user = Auth::user();
@@ -240,11 +249,27 @@ class Index extends Component
         $kegiatan = $query->findOrFail($id);
 
         $this->detailKegiatanId = $kegiatan->id;
+        $this->tampilkanDetail = true;
     }
 
     public function tutupDetail(): void
     {
         $this->detailKegiatanId = null;
+        $this->tampilkanDetail = false;
+    }
+
+    public function updatedTampilkanDetail(bool $value): void
+    {
+        if (! $value) {
+            $this->detailKegiatanId = null;
+        }
+    }
+
+    public function updatedTampilkanForm(bool $value): void
+    {
+        if (! $value) {
+            $this->tutupForm();
+        }
     }
 
     public function render()
@@ -255,8 +280,7 @@ class Index extends Component
         $query = Kegiatan::query()
             ->with('ukm')
             ->withCount([
-                'registrasiKegiatan as jumlah_peserta' =>
-                function ($query) {
+                'registrasiKegiatan as jumlah_peserta' => function ($query) {
                     $query->where('status', 'terdaftar');
                 },
             ]);
@@ -269,7 +293,6 @@ class Index extends Component
         } else {
             $query->where('status', 'dipublikasikan');
         }
-
 
         $detail = null;
 
@@ -289,14 +312,12 @@ class Index extends Component
                 ->find($this->detailKegiatanId);
         }
 
-
         return view('livewire.kegiatan.index', [
             'kegiatan' => $query
                 ->orderByDesc('mulai_pada')
                 ->get(),
 
-            'bolehKelola' =>
-            $user?->role === 'pengurus_ukm'
+            'bolehKelola' => $user?->role === 'pengurus_ukm'
                 && $user->ukm_id !== null,
 
             'detail' => $detail,

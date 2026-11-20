@@ -186,8 +186,10 @@ class Index extends Component
             $ukm = Ukm::findOrFail($this->editingId);
             $this->authorize('update', $ukm);
 
-            // Pengurus UKM cannot change status aktif/nonaktif
+            // Nama dan status UKM adalah kewenangan Kemahasiswaan. Nilai dari
+            // request non-Kemahasiswaan selalu dikembalikan ke data tersimpan.
             if (! Auth::user()->isKemahasiswaan()) {
+                $this->form['nama'] = $ukm->nama;
                 $this->form['status'] = $ukm->status;
             }
 

@@ -11,28 +11,45 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
+    /* Palet institusional SIP-UKM: biru gelap (navy), biru terang, hitam, putih. */
+    --color-navy-50: #f1f5fb;
+    --color-navy-100: #e1eaf6;
+    --color-navy-200: #c4d5eb;
+    --color-navy-300: #94b1d6;
+    --color-navy-400: #5d85b6;
+    --color-navy-500: #3a6396;
+    --color-navy-600: #2b4d7b;
+    --color-navy-700: #223e63;
+    --color-navy-800: #172c49;
+    --color-navy-900: #0e1f36;
+    --color-navy-950: #081525;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
+    /* Halaman publik: kertas, tinta, dan aksen "sunrise" khas Banyuwangi. */
+    --color-paper: #f6f2e9;
+    --color-paper-deep: #efe9dc;
+    --color-sunrise-100: #f8e8cf;
+    --color-sunrise-300: #f2c185;
+    --color-sunrise-500: #d97706;
+    --color-sunrise-700: #9a4a06;
+
+    /* Warna semantik status penerimaan anggota, bukan dekorasi: hijau buka, merah tutup. */
+    --color-moss-50: #e4edda;
+    --color-moss-400: #7fae63;
+    --color-moss-700: #2f5a26;
+    --color-rust-50: #f6ddd6;
+    --color-rust-400: #d9705a;
+    --color-rust-700: #8a2418;
+
+    --color-accent: var(--color-blue-700);
+    --color-accent-content: var(--color-blue-800);
     --color-accent-foreground: var(--color-white);
 }
 
 @layer theme {
     .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
+        --color-accent: var(--color-blue-400);
+        --color-accent-content: var(--color-blue-300);
+        --color-accent-foreground: var(--color-navy-950);
     }
 }
 
@@ -45,6 +62,116 @@
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
     }
+
+    ::selection {
+        background-color: var(--color-blue-700);
+        color: var(--color-white);
+    }
+}
+
+@layer components {
+    /* Garis blueprint halus untuk panel bermerek (hero, panel autentikasi). */
+    .brand-grid {
+        background-image:
+            linear-gradient(to right, rgb(255 255 255 / 0.055) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(255 255 255 / 0.055) 1px, transparent 1px);
+        background-size: 2.5rem 2.5rem;
+    }
+
+    .brand-glow {
+        background-image: radial-gradient(60% 70% at 85% 10%, rgb(37 99 235 / 0.35) 0%, transparent 70%);
+    }
+
+    /* Sidebar bisa diciutkan menjadi rel ikon; tombolnya ada di samping toggle mode gelap. */
+    .app-expand-icon {
+        display: none;
+    }
+
+    .app-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+    }
+}
+
+/* Rel sidebar ditempatkan di layer utilities agar menang atas kelas lebar Tailwind (w-72, lg:pl-72). */
+@layer utilities {
+    @media (min-width: 64rem) {
+        [data-sidebar='collapsed'] .app-sidebar {
+            width: 5rem;
+        }
+
+        [data-sidebar='collapsed'] .app-content {
+            padding-left: 5rem;
+        }
+
+        [data-sidebar='collapsed'] .app-sidebar-header {
+            justify-content: center;
+            padding-inline: 0;
+        }
+
+        [data-sidebar='collapsed'] .app-logo-text,
+        [data-sidebar='collapsed'] .app-nav-group,
+        [data-sidebar='collapsed'] .app-nav-label,
+        [data-sidebar='collapsed'] .app-user-text {
+            display: none;
+        }
+
+        [data-sidebar='collapsed'] .app-nav {
+            gap: 0.25rem;
+        }
+
+        [data-sidebar='collapsed'] .app-nav-link {
+            justify-content: center;
+            padding-inline: 0;
+        }
+
+        [data-sidebar='collapsed'] .app-sidebar-footer {
+            padding: 0.5rem;
+        }
+
+        [data-sidebar='collapsed'] .app-user-card {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        [data-sidebar='collapsed'] .app-user-identity {
+            justify-content: center;
+        }
+
+        [data-sidebar='collapsed'] .app-user-actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.375rem;
+        }
+
+        /* Di rel ikon label hilang, jadi tombol dikembalikan ke kotak 44px agar tetap sasaran sentuh. */
+        [data-sidebar='collapsed'] .app-user-actions > * {
+            flex: none;
+            width: 100%;
+            height: 2.75rem;
+            padding-inline: 0;
+        }
+
+        [data-sidebar='collapsed'] .app-user-links {
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        [data-sidebar='collapsed'] .app-user-links a,
+        [data-sidebar='collapsed'] .app-user-links button {
+            justify-content: center;
+            padding-inline: 0;
+        }
+
+        [data-sidebar='collapsed'] .app-collapse-icon {
+            display: none;
+        }
+
+        [data-sidebar='collapsed'] .app-expand-icon {
+            display: block;
+        }
+    }
 }
 
 [data-flux-field]:not(ui-radio, ui-checkbox) {
@@ -52,7 +179,7 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
@@ -60,7 +187,3 @@ textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
-
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
