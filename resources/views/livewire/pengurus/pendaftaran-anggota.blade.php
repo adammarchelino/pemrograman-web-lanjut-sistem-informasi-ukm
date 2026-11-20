@@ -53,7 +53,7 @@
             />
         @else
             <div class="overflow-x-auto px-4">
-                <table class="w-full min-w-[900px] table-fixed text-left text-sm">
+                <table class="w-full min-w-[720px] table-fixed text-left text-sm">
                     <thead>
                         <tr class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-zinc-400">
                             <th scope="col" class="w-[24%] border-b border-slate-200 py-3 pe-3 text-start font-semibold dark:border-white/10">Mahasiswa</th>
