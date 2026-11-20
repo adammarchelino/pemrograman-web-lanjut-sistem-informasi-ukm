@@ -19,6 +19,11 @@
 
                 @if (auth()->user()->isMahasiswa())
                     <flux:sidebar.group heading="Kegiatan Saya" class="grid">
+                        @if (auth()->user()->role === 'mahasiswa')
+                            <flux:sidebar.item icon="user-plus" :href="route('pendaftaran-anggota.create')" :current="request()->routeIs('pendaftaran-anggota.*')" wire:navigate>
+                                Pendaftaran UKM
+                            </flux:sidebar.item>
+                        @endif
                         <flux:sidebar.item icon="ticket" :href="route('tiket.index')" :current="request()->routeIs('tiket.*')" wire:navigate>
                             Tiket Saya
                         </flux:sidebar.item>
@@ -27,8 +32,16 @@
 
                 <flux:sidebar.group :heading="auth()->user()->isKemahasiswaan() ? 'Administrasi' : 'Ruang Pengurus'" class="grid">
                     @if (auth()->user()->isKemahasiswaan())
-                        <flux:sidebar.item icon="building-library" :href="route('ukm.index')" :current="request()->routeIs('ukm.index')" wire:navigate>Data UKM</flux:sidebar.item>
+                        <flux:sidebar.item icon="clipboard-document-list" :href="route('pengurus.pengajuan-anggota')" :current="request()->routeIs('pengurus.pengajuan-anggota')" wire:navigate>
+                            Pengajuan Anggota
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="building-library" :href="route('ukm.index')" :current="request()->routeIs('ukm.index')" wire:navigate>
+                            Data UKM
+                        </flux:sidebar.item>
                     @else
+                        <flux:sidebar.item icon="clipboard-document-list" :href="route('pengurus.pengajuan-anggota')" :current="request()->routeIs('pengurus.pengajuan-anggota')" wire:navigate>
+                            Pengajuan Anggota
+                        </flux:sidebar.item>
                         @if (auth()->user()->isKetuaUkm())
                             <flux:sidebar.item icon="building-library" :href="route('ukm.profile')" :current="request()->routeIs('ukm.profile')" wire:navigate>Profil UKM</flux:sidebar.item>
                         @endif

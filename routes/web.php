@@ -4,7 +4,9 @@ use App\Livewire\Account\ChangePassword;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\Mahasiswa\DaftarTiket;
 use App\Livewire\Mahasiswa\DetailTiket;
+use App\Livewire\Mahasiswa\PendaftaranAnggota as MahasiswaPendaftaranAnggota;
 use App\Livewire\Pengurus\PresensiKegiatan;
+use App\Livewire\Pengurus\PendaftaranAnggota as PengurusPendaftaranAnggota;
 use App\Livewire\Ukm\Catalog as UkmCatalog;
 use App\Livewire\Ukm\Index as UkmIndex;
 use App\Livewire\Ukm\Profile as UkmProfile;
@@ -19,6 +21,8 @@ Route::middleware(['auth', 'account.active'])->get('account/password/change', Ch
 Route::middleware(['auth', 'account.active', 'password.ready'])->group(function () {
     Route::get('dashboard', DashboardIndex::class)->name('dashboard');
     Route::get('katalog-ukm', UkmCatalog::class)->name('ukm.catalog');
+    Route::get('pendaftaran-anggota', MahasiswaPendaftaranAnggota::class)->name('pendaftaran-anggota.create');
+    Route::get('pengurus/pengajuan-anggota', PengurusPendaftaranAnggota::class)->name('pengurus.pengajuan-anggota');
     Route::get('ukm', UkmIndex::class)->middleware('can:viewAny,App\\Models\\Ukm')->name('ukm.index');
     Route::get('ukm/profil', UkmProfile::class)->name('ukm.profile');
     Route::get('ukm/tim', UkmTeam::class)->name('ukm.team');

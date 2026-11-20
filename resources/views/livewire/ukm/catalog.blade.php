@@ -34,6 +34,26 @@
                         </div>
                     </div>
                     <p class="mt-4 flex-1 text-sm leading-6 text-slate-600 dark:text-zinc-300">{{ $ukm->deskripsi ?: 'Deskripsi UKM belum tersedia.' }}</p>
+
+                    @if (auth()->user()->role === 'mahasiswa')
+                        <div class="mt-5 border-t border-slate-100 pt-4 dark:border-zinc-700">
+                            @if ($ukm->sudah_menjadi_anggota)
+                                <flux:badge color="green" icon="check-circle">Anda sudah menjadi anggota</flux:badge>
+                            @elseif ($ukm->sudah_mengajukan)
+                                <flux:button class="w-full" variant="filled" :href="route('pendaftaran-anggota.create')" wire:navigate>
+                                    Lihat Status Pengajuan
+                                </flux:button>
+                            @elseif ($ukm->isPendaftaranDibuka())
+                                <flux:button class="w-full" variant="primary" :href="route('pendaftaran-anggota.create', ['ukm' => $ukm->id])" wire:navigate>
+                                    Daftar UKM
+                                </flux:button>
+                            @else
+                                <flux:button class="w-full" variant="filled" disabled>
+                                    Pendaftaran Ditutup
+                                </flux:button>
+                            @endif
+                        </div>
+                    @endif
                 </article>
             @endforeach
         </section>
