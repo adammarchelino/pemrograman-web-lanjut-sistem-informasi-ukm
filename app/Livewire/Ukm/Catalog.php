@@ -23,7 +23,17 @@ class Catalog extends Component
 
     public function render(): View
     {
+        $userId = auth()->id();
+
         $ukms = Ukm::query()
+            ->withExists([
+                'pendaftaranAnggota as sudah_mengajukan' => fn ($query) => $query
+                    ->where('user_id', $userId)
+                    ->whereIn('status', ['pending', 'diterima']),
+                'keanggotaan as sudah_menjadi_anggota' => fn ($query) => $query
+                    ->where('user_id', $userId)
+                    ->where('status', 'aktif'),
+            ])
             ->where('status', Ukm::STATUS_AKTIF)
             ->when(trim($this->search) !== '', function ($query) {
                 $term = '%'.trim($this->search).'%';

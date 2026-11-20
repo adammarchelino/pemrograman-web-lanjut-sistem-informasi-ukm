@@ -44,6 +44,28 @@
                     </div>
 
                     <p class="flex-1 p-5 text-sm leading-6 text-slate-600 dark:text-zinc-400">{{ $ukm->deskripsi ?: 'Deskripsi UKM belum tersedia.' }}</p>
+
+                    @if (auth()->user()->role === \App\Models\User::ROLE_MAHASISWA)
+                        <div class="border-t border-slate-100 p-5 pt-4 dark:border-white/10">
+                            @if ($ukm->sudah_menjadi_anggota)
+                                <div class="flex items-center justify-between gap-3">
+                                    <x-ui.badge tone="positive">Anggota aktif</x-ui.badge>
+                                    <span class="text-xs text-slate-500 dark:text-zinc-400">Kamu sudah terdaftar</span>
+                                </div>
+                            @elseif ($ukm->sudah_mengajukan)
+                                <div class="flex items-center justify-between gap-3">
+                                    <x-ui.badge tone="accent">Pengajuan terkirim</x-ui.badge>
+                                    <flux:button size="sm" variant="subtle" :href="route('pendaftaran-anggota.create')" wire:navigate>Lihat status</flux:button>
+                                </div>
+                            @elseif ($ukm->isPendaftaranDibuka())
+                                <flux:button size="sm" variant="primary" class="w-full" icon="user-plus" :href="route('pendaftaran-anggota.create', ['ukm' => $ukm->id])" wire:navigate>
+                                    Daftar UKM
+                                </flux:button>
+                            @else
+                                <p class="text-xs text-slate-500 dark:text-zinc-400">Pendaftaran anggota sedang ditutup.</p>
+                            @endif
+                        </div>
+                    @endif
                 </article>
             @endforeach
         </section>

@@ -30,6 +30,10 @@
                     <flux:icon name="building-library" class="size-4 shrink-0" />
                     <span class="app-nav-label">Katalog UKM</span>
                 </a>
+                <a href="{{ route('pendaftaran-anggota.create') }}" title="Pendaftaran UKM" @class([$linkClass, request()->routeIs('pendaftaran-anggota.*') ? $activeClass : $idleClass]) wire:navigate>
+                    <flux:icon name="user-plus" class="size-4 shrink-0" />
+                    <span class="app-nav-label">Pendaftaran UKM</span>
+                </a>
                 <a href="{{ route('tiket.index') }}" title="Tiket Saya" @class([$linkClass, request()->routeIs('tiket.*') ? $activeClass : $idleClass]) wire:navigate>
                     <flux:icon name="ticket" class="size-4 shrink-0" />
                     <span class="app-nav-label">Tiket Saya</span>
@@ -69,6 +73,11 @@
                         <span class="app-nav-label">Divisi &amp; Pengurus</span>
                     </a>
                 @endif
+
+                <a href="{{ route('pengurus.pengajuan-anggota') }}" title="Pengajuan Anggota" @class([$linkClass, request()->routeIs('pengurus.pengajuan-anggota') ? $activeClass : $idleClass]) wire:navigate>
+                    <flux:icon name="clipboard-document-list" class="size-4 shrink-0" />
+                    <span class="app-nav-label">Pengajuan Anggota</span>
+                </a>
 
                 <a href="{{ route('kegiatan.index') }}" title="Kegiatan" @class([$linkClass, request()->routeIs('kegiatan.*') ? $activeClass : $idleClass]) wire:navigate>
                     <flux:icon name="calendar-days" class="size-4 shrink-0" />

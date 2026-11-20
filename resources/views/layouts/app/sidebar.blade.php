@@ -90,6 +90,10 @@
                                 <flux:menu.item icon="building-library" :href="route('ukm.catalog')" wire:navigate>Katalog UKM</flux:menu.item>
                             @endif
 
+                            @if ($user->role === \App\Models\User::ROLE_MAHASISWA)
+                                <flux:menu.item icon="user-plus" :href="route('pendaftaran-anggota.create')" wire:navigate>Pendaftaran UKM</flux:menu.item>
+                            @endif
+
                             {{-- Tiket hanya untuk mahasiswa murni; isMahasiswa() juga true untuk pengurus UKM. --}}
                             @if ($user->role === \App\Models\User::ROLE_MAHASISWA)
                                 <flux:menu.item icon="ticket" :href="route('tiket.index')" wire:navigate>Tiket Saya</flux:menu.item>
@@ -99,6 +103,7 @@
                                 <flux:menu.item icon="building-library" :href="route('ukm.index')" wire:navigate>Data UKM</flux:menu.item>
                                 <flux:menu.item icon="users" :href="route('users.index')" wire:navigate>User &amp; Role</flux:menu.item>
                             @elseif ($user->isPengurusUkm())
+                                <flux:menu.item icon="clipboard-document-list" :href="route('pengurus.pengajuan-anggota')" wire:navigate>Pengajuan Anggota</flux:menu.item>
                                 @if ($user->isKetuaUkm())
                                     <flux:menu.item icon="building-library" :href="route('ukm.profile')" wire:navigate>Profil UKM</flux:menu.item>
                                 @endif

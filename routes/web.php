@@ -5,6 +5,8 @@ use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\Kegiatan\Index as KegiatanIndex;
 use App\Livewire\Mahasiswa\DaftarTiket;
 use App\Livewire\Mahasiswa\DetailTiket;
+use App\Livewire\Mahasiswa\PendaftaranAnggota as MahasiswaPendaftaranAnggota;
+use App\Livewire\Pengurus\PendaftaranAnggota as PengurusPendaftaranAnggota;
 use App\Livewire\Pengurus\PresensiIndex;
 use App\Livewire\Pengurus\PresensiKegiatan;
 use App\Livewire\Ukm\Catalog as UkmCatalog;
@@ -48,6 +50,14 @@ Route::middleware([
     // Katalog UKM
     Route::get('katalog-ukm', UkmCatalog::class)
         ->name('ukm.catalog');
+
+    // Pendaftaran anggota UKM oleh mahasiswa
+    Route::get('pendaftaran-anggota', MahasiswaPendaftaranAnggota::class)
+        ->name('pendaftaran-anggota.create');
+
+    // Pengelolaan pengajuan anggota oleh pengurus UKM
+    Route::get('pengurus/pengajuan-anggota', PengurusPendaftaranAnggota::class)
+        ->name('pengurus.pengajuan-anggota');
 
     // Pengelolaan UKM
     Route::get('ukm', UkmIndex::class)
