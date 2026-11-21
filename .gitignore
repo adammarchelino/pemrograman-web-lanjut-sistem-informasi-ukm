@@ -37,3 +37,6 @@ yarn-error.log
 /boost.json
 /opencode.json
 /opencode.jsonc
+.freebuff
+.cloud-attachments
+.agents
