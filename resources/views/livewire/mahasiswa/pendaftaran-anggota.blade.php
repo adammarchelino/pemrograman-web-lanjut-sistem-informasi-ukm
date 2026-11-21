@@ -85,7 +85,7 @@
                         @foreach ($riwayat as $item)
                             @php
                                 $statusTone = match ($item->status) {
-                                    'pending' => 'accent',
+                                    'pending' => 'warning',
                                     'diterima' => 'positive',
                                     default => 'negative',
                                 };

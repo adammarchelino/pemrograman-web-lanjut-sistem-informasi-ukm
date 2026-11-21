@@ -14,8 +14,12 @@
             'dot' => 'bg-moss-700 dark:bg-moss-400',
         ],
         'negative' => [
-            'box' => 'border-rust-700/25 bg-rust-50 text-rust-700 dark:border-rust-700/50 dark:bg-rust-700/20 dark:text-rust-50',
-            'dot' => 'bg-rust-700 dark:bg-rust-400',
+            'box' => 'border-red-600/25 bg-red-50 text-red-700 dark:border-red-500/40 dark:bg-red-950/50 dark:text-red-200',
+            'dot' => 'bg-red-600 dark:bg-red-400',
+        ],
+        'warning' => [
+            'box' => 'border-amber-600/30 bg-amber-50 text-amber-800 dark:border-amber-500/40 dark:bg-amber-950/50 dark:text-amber-200',
+            'dot' => 'bg-amber-500 dark:bg-amber-300',
         ],
         'accent' => [
             'box' => 'border-sunrise-700/20 bg-sunrise-100 text-sunrise-700 dark:border-sunrise-700/50 dark:bg-sunrise-700/25 dark:text-sunrise-100',

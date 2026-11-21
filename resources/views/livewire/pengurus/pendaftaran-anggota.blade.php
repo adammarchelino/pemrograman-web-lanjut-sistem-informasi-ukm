@@ -15,7 +15,7 @@
     <section class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Ringkasan pengajuan anggota">
         <x-ui.stat label="Menunggu" :value="$statistik['pending']" note="Belum diproses" icon="clock" tone="amber" />
         <x-ui.stat label="Diterima" :value="$statistik['diterima']" note="Menjadi anggota aktif" icon="check-circle" tone="emerald" />
-        <x-ui.stat label="Ditolak" :value="$statistik['ditolak']" note="Tidak lolos seleksi" icon="x-circle" tone="slate" />
+        <x-ui.stat label="Ditolak" :value="$statistik['ditolak']" note="Tidak lolos seleksi" icon="x-circle" tone="rose" />
         <x-ui.stat label="Total Pengajuan" :value="$statistik['semua']" note="Seluruh pengajuan UKM" icon="clipboard-document-list" tone="navy" />
     </section>
 
@@ -68,7 +68,7 @@
                         @foreach ($pengajuan as $item)
                             @php
                                 $statusTone = match ($item->status) {
-                                    'pending' => 'accent',
+                                    'pending' => 'warning',
                                     'diterima' => 'positive',
                                     default => 'negative',
                                 };

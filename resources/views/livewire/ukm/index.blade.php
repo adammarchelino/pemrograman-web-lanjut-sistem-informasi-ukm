@@ -16,7 +16,7 @@
     <section class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Ringkasan data UKM">
         <x-ui.stat label="Total UKM" :value="$ukmStats['total']" note="Seluruh organisasi terdaftar" icon="building-office-2" tone="navy" />
         <x-ui.stat label="UKM Aktif" :value="$ukmStats['aktif']" note="Organisasi berstatus aktif" icon="check-circle" tone="emerald" />
-        <x-ui.stat label="UKM Nonaktif" :value="$ukmStats['nonaktif']" note="Organisasi berstatus nonaktif" icon="pause-circle" tone="slate" />
+        <x-ui.stat label="UKM Nonaktif" :value="$ukmStats['nonaktif']" note="Organisasi berstatus nonaktif" icon="pause-circle" tone="rose" />
         <x-ui.stat label="Pendaftaran Dibuka" :value="$ukmStats['pendaftaran_dibuka']" note="UKM menerima calon anggota" icon="user-plus" tone="amber" />
     </section>
 
@@ -108,7 +108,7 @@
                             </td>
 
                             <td class="py-3.5 pe-3 align-middle">
-                                <x-ui.badge :tone="$ukm->status === 'aktif' ? 'positive' : 'neutral'">
+                                <x-ui.badge :tone="$ukm->status === 'aktif' ? 'positive' : 'negative'">
                                     {{ $ukm->status === 'aktif' ? 'Aktif' : 'Nonaktif' }}
                                 </x-ui.badge>
                             </td>
@@ -259,7 +259,7 @@
                     <div class="min-w-0 flex-1">
                         <div class="flex flex-wrap items-center gap-2">
                             <h2 class="text-lg font-semibold text-slate-950 dark:text-white">{{ $selectedUkm->nama }}</h2>
-                            <x-ui.badge :tone="$selectedUkm->status === 'aktif' ? 'positive' : 'neutral'">
+                            <x-ui.badge :tone="$selectedUkm->status === 'aktif' ? 'positive' : 'negative'">
                                 {{ $selectedUkm->status === 'aktif' ? 'Aktif' : 'Nonaktif' }}
                             </x-ui.badge>
                         </div>

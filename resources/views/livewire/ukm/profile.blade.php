@@ -5,7 +5,7 @@
         description="Perubahan logo dan deskripsi langsung tampil pada katalog mahasiswa."
     >
         <x-slot:actions>
-            <x-ui.badge :tone="$ukm->status === 'aktif' ? 'positive' : 'neutral'">
+            <x-ui.badge :tone="$ukm->status === 'aktif' ? 'positive' : 'negative'">
                 {{ $ukm->status === 'aktif' ? 'UKM Aktif' : 'UKM Nonaktif' }}
             </x-ui.badge>
         </x-slot:actions>

@@ -12,7 +12,16 @@
         'navy' => 'bg-navy-900',
         'emerald' => 'bg-emerald-600',
         'amber' => 'bg-amber-500',
+        'rose' => 'bg-red-600',
         'slate' => 'bg-slate-400',
+    ];
+
+    // Angka mengikuti makna statusnya: hijau untuk berhasil, kuning untuk
+    // menunggu, merah untuk gagal/nonaktif. Tone netral tetap navy/putih.
+    $valueTones = [
+        'emerald' => 'text-emerald-700 dark:text-emerald-300',
+        'amber' => 'text-amber-700 dark:text-amber-300',
+        'rose' => 'text-red-700 dark:text-red-300',
     ];
 @endphp
 
@@ -22,7 +31,7 @@
     <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
             <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-zinc-400">{{ $label }}</p>
-            <p class="mt-2 text-3xl font-semibold tabular-nums tracking-tight text-slate-950 dark:text-white">{{ number_format($value) }}</p>
+            <p class="mt-2 text-3xl font-semibold tabular-nums tracking-tight {{ $valueTones[$tone] ?? 'text-slate-950 dark:text-white' }}">{{ number_format($value) }}</p>
             @if ($note)
                 <p class="mt-1 text-xs text-slate-500 dark:text-zinc-400">{{ $note }}</p>
             @endif

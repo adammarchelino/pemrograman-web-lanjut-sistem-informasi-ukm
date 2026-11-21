@@ -12,7 +12,7 @@
     <section class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Ringkasan pengajuan anggota lintas UKM">
         <x-ui.stat label="Menunggu" :value="$statistik['pending']" note="Belum diputuskan pengurus" icon="clock" tone="amber" />
         <x-ui.stat label="Diterima" :value="$statistik['diterima']" note="Tercatat sebagai anggota" icon="check-circle" tone="emerald" />
-        <x-ui.stat label="Ditolak" :value="$statistik['ditolak']" note="Tidak lolos seleksi" icon="x-circle" tone="slate" />
+        <x-ui.stat label="Ditolak" :value="$statistik['ditolak']" note="Tidak lolos seleksi" icon="x-circle" tone="rose" />
         <x-ui.stat label="Total Pengajuan" :value="$statistik['semua']" note="Seluruh UKM" icon="clipboard-document-list" tone="navy" />
     </section>
 
@@ -94,7 +94,7 @@
                         @foreach ($pengajuan as $item)
                             @php
                                 $statusTone = match ($item->status) {
-                                    'pending' => 'accent',
+                                    'pending' => 'warning',
                                     'diterima' => 'positive',
                                     default => 'negative',
                                 };
@@ -178,7 +178,7 @@
                     <div class="flex flex-wrap items-center gap-2">
                         <p class="text-sm font-medium text-slate-950 dark:text-white">{{ $ukm->nama }}</p>
                         @if (! $ukm->isAktif())
-                            <x-ui.badge tone="neutral" :marker="false">Nonaktif</x-ui.badge>
+                            <x-ui.badge tone="negative" :marker="false">Nonaktif</x-ui.badge>
                         @endif
                     </div>
 
@@ -228,7 +228,7 @@
                                 <div class="flex flex-wrap items-center gap-2">
                                     <span class="font-medium text-slate-950 dark:text-white">{{ $ukm->nama }}</span>
                                     @if (! $ukm->isAktif())
-                                        <x-ui.badge tone="neutral" :marker="false">Nonaktif</x-ui.badge>
+                                        <x-ui.badge tone="negative" :marker="false">Nonaktif</x-ui.badge>
                                     @endif
                                 </div>
                             </td>

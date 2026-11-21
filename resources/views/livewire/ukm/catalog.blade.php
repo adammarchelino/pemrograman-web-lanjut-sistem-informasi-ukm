@@ -54,7 +54,7 @@
                                 </div>
                             @elseif ($ukm->sudah_mengajukan)
                                 <div class="flex items-center justify-between gap-3">
-                                    <x-ui.badge tone="accent">Pengajuan terkirim</x-ui.badge>
+                                    <x-ui.badge tone="warning">Pengajuan terkirim</x-ui.badge>
                                     <flux:button size="sm" variant="subtle" :href="route('pendaftaran-anggota.create')" wire:navigate>Lihat status</flux:button>
                                 </div>
                             @elseif ($ukm->isPendaftaranDibuka())

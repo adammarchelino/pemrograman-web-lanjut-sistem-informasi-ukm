@@ -48,6 +48,17 @@ Fakta dari repository dan riwayat kerja:
 - Nama domain UI untuk event telah diperjelas menjadi **“Acara UKM”** atau **“Acara”** agar tidak tertukar dengan aktivitas rutin UKM. Nama tabel/model seperti `kegiatan` dapat tetap dipakai secara internal kecuali ada keputusan tim untuk mengubah skema.
 - Jangan memutuskan aturan bisnis baru secara sepihak. Bila belum jelas, jelaskan pilihan dan konsekuensinya.
 
+### Konvensi warna status UI
+
+Gunakan makna warna yang sama di seluruh aplikasi; jangan memakai warna netral untuk status yang punya arti.
+
+- **Hijau (`positive`)** — berhasil/aktif: diterima, anggota aktif, pendaftaran dibuka, akun aktif.
+- **Kuning (`warning`)** — menunggu/diproses: pengajuan pending, pengajuan terkirim.
+- **Merah (`negative`)** — gagal/berhenti: ditolak, nonaktif, pendaftaran ditutup.
+- **Netral** — informasi tanpa nilai status (label role, "Hanya baca", draf).
+
+Gunakan `x-ui.badge` dengan tone tersebut untuk status di tabel/kartu, dan `x-ui.stat` dengan tone `emerald`/`amber`/`rose` agar angka KPI ikut berwarna sesuai makna. Jangan menulis warna status langsung dengan class Tailwind di view baru.
+
 ## 5. Keadaan Repository Saat Handoff
 
 > Snapshot ketika dokumen ini dibuat; keadaan bisa berubah setelahnya.
