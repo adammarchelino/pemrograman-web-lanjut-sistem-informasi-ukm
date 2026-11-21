@@ -101,6 +101,7 @@
 
                             @if ($user->isKemahasiswaan())
                                 <flux:menu.item icon="building-library" :href="route('ukm.index')" wire:navigate>Data UKM</flux:menu.item>
+                                <flux:menu.item icon="clipboard-document-list" :href="route('kemahasiswaan.pengajuan-anggota')" wire:navigate>Pengajuan Anggota</flux:menu.item>
                                 <flux:menu.item icon="users" :href="route('users.index')" wire:navigate>User &amp; Role</flux:menu.item>
                             @elseif ($user->isPengurusUkm())
                                 <flux:menu.item icon="clipboard-document-list" :href="route('pengurus.pengajuan-anggota')" wire:navigate>Pengajuan Anggota</flux:menu.item>

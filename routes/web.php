@@ -3,6 +3,7 @@
 use App\Livewire\Account\ChangePassword;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\Kegiatan\Index as KegiatanIndex;
+use App\Livewire\Kemahasiswaan\PengajuanAnggota as KemahasiswaanPengajuanAnggota;
 use App\Livewire\Mahasiswa\DaftarTiket;
 use App\Livewire\Mahasiswa\DetailTiket;
 use App\Livewire\Mahasiswa\PendaftaranAnggota as MahasiswaPendaftaranAnggota;
@@ -73,6 +74,10 @@ Route::middleware([
     // Pengelolaan pengguna
     Route::get('users', UserIndex::class)
         ->name('users.index');
+
+    // Pemantauan pengajuan anggota lintas UKM (Kemahasiswaan, hanya-baca)
+    Route::get('kemahasiswaan/pengajuan-anggota', KemahasiswaanPengajuanAnggota::class)
+        ->name('kemahasiswaan.pengajuan-anggota');
 
     // Manajemen Kegiatan UKM
     Route::get('/kegiatan', KegiatanIndex::class)

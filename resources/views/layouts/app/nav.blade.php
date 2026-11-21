@@ -50,6 +50,10 @@
                     <flux:icon name="building-library" class="size-4 shrink-0" />
                     <span class="app-nav-label">Data UKM</span>
                 </a>
+                <a href="{{ route('kemahasiswaan.pengajuan-anggota') }}" title="Pengajuan Anggota" @class([$linkClass, request()->routeIs('kemahasiswaan.pengajuan-anggota') ? $activeClass : $idleClass]) wire:navigate>
+                    <flux:icon name="clipboard-document-list" class="size-4 shrink-0" />
+                    <span class="app-nav-label">Pengajuan Anggota</span>
+                </a>
                 <a href="{{ route('users.index') }}" title="User &amp; Role" @class([$linkClass, request()->routeIs('users.*') ? $activeClass : $idleClass]) wire:navigate>
                     <flux:icon name="users" class="size-4 shrink-0" />
                     <span class="app-nav-label">User &amp; Role</span>

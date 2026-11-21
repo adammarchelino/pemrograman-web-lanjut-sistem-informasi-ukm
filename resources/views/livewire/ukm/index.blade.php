@@ -301,8 +301,8 @@
                         <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-white">{{ $selectedUkm->pengurus->count() }} orang</p>
                     </div>
                     <div class="rounded-lg border border-slate-200 p-3 text-center dark:border-white/10">
-                        <p class="text-xs text-slate-500 dark:text-zinc-400">Total Anggota</p>
-                        <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-white">{{ $selectedUkm->keanggotaan_count ?? 0 }} orang</p>
+                        <p class="text-xs text-slate-500 dark:text-zinc-400">Anggota Aktif</p>
+                        <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-white">{{ $selectedUkm->anggota_aktif_count ?? 0 }} orang</p>
                     </div>
                 </div>
 

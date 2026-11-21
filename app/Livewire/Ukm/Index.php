@@ -378,7 +378,11 @@ class Index extends Component
         $ukms = $query->paginate(10);
 
         $selectedUkm = $this->selectedUkmId
-            ? Ukm::with(['pengurus' => fn ($query) => $query->where('akun_aktif', true)])->withCount(['pengurusAktif as pengurus_count', 'keanggotaan', 'kegiatan'])->find($this->selectedUkmId)
+            ? Ukm::with(['pengurus' => fn ($query) => $query->where('akun_aktif', true)])->withCount([
+                'pengurusAktif as pengurus_count',
+                'keanggotaan as anggota_aktif_count' => fn ($query) => $query->where('status', 'aktif'),
+                'kegiatan',
+            ])->find($this->selectedUkmId)
             : null;
 
         return view('livewire.ukm.index', [
