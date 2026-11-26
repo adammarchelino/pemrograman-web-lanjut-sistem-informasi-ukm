@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
 #[Fillable([
     'ukm_id', 'nama', 'deskripsi', 'mulai_pada', 'selesai_pada', 'lokasi', 'kapasitas', 'audiens',
     'pendaftaran_dibuka_pada', 'pendaftaran_ditutup_pada', 'status',

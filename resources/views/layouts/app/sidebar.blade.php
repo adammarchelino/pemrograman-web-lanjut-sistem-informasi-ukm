@@ -96,6 +96,7 @@
 
                             {{-- Tiket hanya untuk mahasiswa murni; isMahasiswa() juga true untuk pengurus UKM. --}}
                             @if ($user->role === \App\Models\User::ROLE_MAHASISWA)
+                                <flux:menu.item icon="calendar-days" :href="route('kegiatan.index')" wire:navigate>Kegiatan</flux:menu.item>
                                 <flux:menu.item icon="ticket" :href="route('tiket.index')" wire:navigate>Tiket Saya</flux:menu.item>
                             @endif
 

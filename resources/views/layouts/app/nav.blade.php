@@ -34,6 +34,10 @@
                     <flux:icon name="user-plus" class="size-4 shrink-0" />
                     <span class="app-nav-label">Pendaftaran UKM</span>
                 </a>
+                <a href="{{ route('kegiatan.index') }}" title="Kegiatan" @class([$linkClass, request()->routeIs('kegiatan.*') ? $activeClass : $idleClass]) wire:navigate>
+                    <flux:icon name="calendar-days" class="size-4 shrink-0" />
+                    <span class="app-nav-label">Kegiatan</span>
+                </a>
                 <a href="{{ route('tiket.index') }}" title="Tiket Saya" @class([$linkClass, request()->routeIs('tiket.*') ? $activeClass : $idleClass]) wire:navigate>
                     <flux:icon name="ticket" class="size-4 shrink-0" />
                     <span class="app-nav-label">Tiket Saya</span>

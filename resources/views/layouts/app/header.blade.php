@@ -25,6 +25,9 @@
                         <a href="{{ route('pendaftaran-anggota.create') }}" @class(['rounded-lg px-3 py-2 text-sm font-medium transition-colors', request()->routeIs('pendaftaran-anggota.*') ? 'bg-white/10 text-white' : 'text-blue-100/75 hover:bg-white/10 hover:text-white']) wire:navigate>
                             Pendaftaran UKM
                         </a>
+                        <a href="{{ route('kegiatan.index') }}" @class(['rounded-lg px-3 py-2 text-sm font-medium transition-colors', request()->routeIs('kegiatan.*') ? 'bg-white/10 text-white' : 'text-blue-100/75 hover:bg-white/10 hover:text-white']) wire:navigate>
+                            Kegiatan
+                        </a>
                         <a href="{{ route('tiket.index') }}" @class(['rounded-lg px-3 py-2 text-sm font-medium transition-colors', request()->routeIs('tiket.*') ? 'bg-white/10 text-white' : 'text-blue-100/75 hover:bg-white/10 hover:text-white']) wire:navigate>
                             Tiket Saya
                         </a>
@@ -64,6 +67,7 @@
                         <a href="{{ route('dashboard') }}" @class(['shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium', request()->routeIs('dashboard') ? 'bg-white/10 text-white' : 'text-blue-100/75']) wire:navigate>Dashboard</a>
                         <a href="{{ route('ukm.catalog') }}" @class(['shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium', request()->routeIs('ukm.catalog') ? 'bg-white/10 text-white' : 'text-blue-100/75']) wire:navigate>Katalog UKM</a>
                         <a href="{{ route('pendaftaran-anggota.create') }}" @class(['shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium', request()->routeIs('pendaftaran-anggota.*') ? 'bg-white/10 text-white' : 'text-blue-100/75']) wire:navigate>Pendaftaran UKM</a>
+                        <a href="{{ route('kegiatan.index') }}" @class(['shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium', request()->routeIs('kegiatan.*') ? 'bg-white/10 text-white' : 'text-blue-100/75']) wire:navigate>Kegiatan</a>
                         <a href="{{ route('tiket.index') }}" @class(['shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium', request()->routeIs('tiket.*') ? 'bg-white/10 text-white' : 'text-blue-100/75']) wire:navigate>Tiket Saya</a>
                     </nav>
                 </div>

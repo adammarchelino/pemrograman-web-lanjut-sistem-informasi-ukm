@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Livewire\Kegiatan;
+
 use App\Models\Kegiatan;
 use App\Models\RegistrasiKegiatan;
 use App\Models\User;
@@ -10,25 +12,41 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+
 #[Layout('layouts.app')]
 #[Title('Kegiatan UKM · SIP-UKM')]
 class Index extends Component
 {
     public bool $tampilkanForm = false;
+
     public bool $tampilkanDetail = false;
+
     public bool $tampilkanPeserta = false;
+
     public ?int $pesertaKegiatanId = null;
+
     public ?int $editKegiatanId = null;
+
     public ?int $detailKegiatanId = null;
+
     public string $nama = '';
+
     public string $deskripsi = '';
+
     public string $mulai_pada = '';
+
     public string $selesai_pada = '';
+
     public string $lokasi = '';
+
     public string $kapasitas = '';
+
     public string $audiens = 'mahasiswa_poliwangi';
+
     public string $pendaftaran_dibuka_pada = '';
+
     public string $pendaftaran_ditutup_pada = '';
+
     public string $status = 'draf';
 
     // Pemeriksaan pengguna terpusat agar Intelephense mengenali model User.
@@ -37,6 +55,7 @@ class Index extends Component
     {
         $user = Auth::user();
         abort_unless($user instanceof User && $user->isActive(), 403);
+
         return $user;
     }
 
@@ -109,10 +128,10 @@ class Index extends Component
         $this->audiens = $kegiatan->audiens;
         $this->pendaftaran_dibuka_pada =
             $kegiatan->pendaftaran_dibuka_pada
-            ?->format('Y-m-d\TH:i') ?? '';
+                ?->format('Y-m-d\TH:i') ?? '';
         $this->pendaftaran_ditutup_pada =
             $kegiatan->pendaftaran_ditutup_pada
-            ?->format('Y-m-d\TH:i') ?? '';
+                ?->format('Y-m-d\TH:i') ?? '';
         $this->status = $kegiatan->status;
         // Tutup detail jika sebelumnya sedang dibuka.
         $this->detailKegiatanId = null;
@@ -143,6 +162,7 @@ class Index extends Component
         DB::transaction(function () use ($user, $data): void {
             if ($this->editKegiatanId === null) {
                 Kegiatan::create($data);
+
                 return;
             }
             $kegiatan = Kegiatan::query()
@@ -283,7 +303,7 @@ class Index extends Component
         $this->resetValidation();
         session()->flash(
             'success',
-            'Pendaftaran kegiatan berhasil!'
+            'Pendaftaran kegiatan berhasil! Tiket diterbitkan oleh pengurus UKM.'
         );
     }
 
@@ -348,6 +368,7 @@ class Index extends Component
                     'pembatalan',
                     'Registrasi ini sudah dibatalkan.'
                 );
+
                 return;
             }
             // Jangan mengganggu tiket atau presensi
@@ -360,6 +381,7 @@ class Index extends Component
                     'pembatalan',
                     'Registrasi tidak bisa dibatalkan karena sudah memiliki tiket atau presensi.'
                 );
+
                 return;
             }
             $registrasi->update([
@@ -395,6 +417,7 @@ class Index extends Component
             }
             // Hanya hapus jika belum memiliki registrasi.
             $kegiatan->delete();
+
             return true;
         }, 3);
         if (! $berhasil) {
@@ -402,6 +425,7 @@ class Index extends Component
                 'hapus',
                 'Kegiatan tidak dapat dihapus karena sudah memiliki riwayat pendaftaran peserta.'
             );
+
             return;
         }
         // Bersihkan data sementara pada komponen.
@@ -461,6 +485,7 @@ class Index extends Component
                 // Ambil seluruh registrasi kegiatan tersebut.
                 $daftarPeserta = $kegiatanPeserta
                     ->registrasiKegiatan()
+                    ->with(['tiketKegiatan', 'presensi'])
                     ->orderByDesc('terdaftar_pada')
                     ->get();
                 // Hitung registrasi yang masih aktif.
@@ -478,6 +503,7 @@ class Index extends Component
                 ->pluck('id', 'kegiatan_id')
                 ->all();
         }
+
         return view('livewire.kegiatan.index', [
             'kegiatan' => $query
                 ->orderByDesc('mulai_pada')
@@ -487,6 +513,7 @@ class Index extends Component
             'kegiatanPeserta' => $kegiatanPeserta,
             'daftarPeserta' => $daftarPeserta,
             'jumlahTerdaftar' => $jumlahTerdaftar,
+            'bolehDaftar' => $this->bolehDaftar($user),
             'pendaftaranSaya' => $pendaftaranSaya,
         ]);
     }
