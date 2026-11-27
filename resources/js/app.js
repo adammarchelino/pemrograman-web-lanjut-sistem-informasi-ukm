@@ -1,18 +1,56 @@
 import QRCode from 'qrcode';
+import { buatPemindaiQr } from './pemindai-qr';
+
+const daftarkanPemindaiQr = () => window.Alpine.data('pemindaiQr', buatPemindaiQr());
+
+if (window.Alpine) {
+    daftarkanPemindaiQr();
+} else {
+    document.addEventListener('alpine:init', daftarkanPemindaiQr);
+}
 
 window.renderTiketQr = async function (canvasId, kodeTiket) {
     const canvas = document.getElementById(canvasId);
     if (!canvas || !kodeTiket) return;
+
+    const peringatan = document.getElementById(`${canvasId}-gagal`);
 
     try {
         await QRCode.toCanvas(canvas, kodeTiket, {
             width: 200,
             margin: 2,
         });
+
+        canvas.hidden = false;
+        if (peringatan) peringatan.hidden = true;
     } catch (error) {
         console.error('Gagal merender QR Code tiket:', error);
+
+        canvas.hidden = true;
+        if (peringatan) peringatan.hidden = false;
     }
 };
+
+// Tombol salin kode tiket. Bila clipboard tidak tersedia (mis. HTTP biasa), teksnya diseleksi.
+document.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-salin]');
+
+    if (!button) return;
+
+    const sumber = document.getElementById(button.dataset.salin);
+
+    if (!sumber) return;
+
+    try {
+        await navigator.clipboard.writeText(sumber.textContent.trim());
+        button.textContent = 'Tersalin';
+    } catch (error) {
+        window.getSelection().selectAllChildren(sumber);
+        button.textContent = 'Teks dipilih, salin manual';
+    }
+
+    setTimeout(() => (button.textContent = 'Salin Kode'), 2500);
+});
 
 // Filter direktori UKM di landing. Tanpa JavaScript, semua kartu tetap tampil.
 const initUkmFilter = () => {
