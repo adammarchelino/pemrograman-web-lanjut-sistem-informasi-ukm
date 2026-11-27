@@ -1,0 +1,505 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\:\:\$aktif\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Dashboard/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\:\:\$pendaftaran_dibuka\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Dashboard/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Dashboard/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$kemahasiswaan\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Dashboard/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$mahasiswa\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Dashboard/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$pengurus_ukm\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Dashboard/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Dashboard/Index.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: app/Livewire/Kegiatan/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Kegiatan\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Kegiatan/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Mahasiswa\\DaftarTiket\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Mahasiswa/DaftarTiket.php
+
+		-
+			message: '#^Method App\\Livewire\\Mahasiswa\\DetailTiket\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Mahasiswa/DetailTiket.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Ukm\>\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Livewire/Mahasiswa/PendaftaranAnggota.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Ukm\>\:\:\$pendaftaran_anggota_dibuka_pada\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Mahasiswa/PendaftaranAnggota.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Ukm\>\:\:\$pendaftaran_anggota_ditutup_pada\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Mahasiswa/PendaftaranAnggota.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Ukm\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Ukm\>\:\:isAktif\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Mahasiswa/PendaftaranAnggota.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Ukm\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Ukm\>\:\:isPendaftaranDibuka\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Mahasiswa/PendaftaranAnggota.php
+
+		-
+			message: '#^Parameter \#1 \$ukm of method App\\Models\\User\:\:canManageUkm\(\) expects App\\Models\\Ukm\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Livewire/Pengurus/PendaftaranAnggota.php
+
+		-
+			message: '#^Property App\\Livewire\\Pengurus\\PendaftaranAnggota\:\:\$catatan type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Pengurus/PendaftaranAnggota.php
+
+		-
+			message: '#^Method App\\Livewire\\Pengurus\\PresensiIndex\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Pengurus/PresensiIndex.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Pengurus/PresensiKegiatan.php
+
+		-
+			message: '#^Method App\\Livewire\\Pengurus\\PresensiKegiatan\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Pengurus/PresensiKegiatan.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Livewire/Pengurus/PresensiKegiatan.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\:\:\$aktif\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Ukm/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\:\:\$nonaktif\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Ukm/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\:\:\$pendaftaran_dibuka\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Ukm/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Ukm\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Ukm/Index.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Ukm/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Ukm\\Index\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Ukm/Index.php
+
+		-
+			message: '#^Property App\\Livewire\\Ukm\\Index\:\:\$form type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Ukm/Index.php
+
+		-
+			message: '#^Property App\\Livewire\\Ukm\\Index\:\:\$messages type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Ukm/Index.php
+
+		-
+			message: '#^Property App\\Livewire\\Ukm\\Profile\:\:\$form type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Ukm/Profile.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Livewire/Ukm/Team.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$nama\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Ukm/Team.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Ukm/Team.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pengurus_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Ukm/Team.php
+
+		-
+			message: '#^Property App\\Livewire\\Ukm\\Team\:\:\$divisionAssignments type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Ukm/Team.php
+
+		-
+			message: '#^Property App\\Livewire\\Ukm\\Team\:\:\$member type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Ukm/Team.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$kemahasiswaan\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Users/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$mahasiswa\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Users/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$pengurus_ukm\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Users/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Users/Index.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Ukm\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Ukm\>\:\:divisi\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Users/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Users\\Index\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Users/Index.php
+
+		-
+			message: '#^Property App\\Livewire\\Users\\Index\:\:\$form type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Users/Index.php
+
+		-
+			message: '#^Property App\\Livewire\\Users\\Index\:\:\$messages type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Users/Index.php
+
+		-
+			message: '#^Method App\\Models\\DivisiUkm\:\:pengurus\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DivisiUkm.php
+
+		-
+			message: '#^Method App\\Models\\DivisiUkm\:\:ukm\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DivisiUkm.php
+
+		-
+			message: '#^Method App\\Models\\Keanggotaan\:\:pendaftaranAnggota\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Keanggotaan.php
+
+		-
+			message: '#^Method App\\Models\\Keanggotaan\:\:ukm\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Keanggotaan.php
+
+		-
+			message: '#^Method App\\Models\\Keanggotaan\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Keanggotaan.php
+
+		-
+			message: '#^Method App\\Models\\Kegiatan\:\:registrasiKegiatan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Kegiatan.php
+
+		-
+			message: '#^Method App\\Models\\Kegiatan\:\:ukm\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Kegiatan.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\PendaftaranAnggota\)\>\|static\(App\\Models\\PendaftaranAnggota\)\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\PendaftaranAnggota\)\>\|static\(App\\Models\\PendaftaranAnggota\)\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\PendaftaranAnggota\)\>\|static\(App\\Models\\PendaftaranAnggota\)\:\:\$ukm_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\PendaftaranAnggota\)\>\|static\(App\\Models\\PendaftaranAnggota\)\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\PendaftaranAnggota\)\>\|static\(App\\Models\\PendaftaranAnggota\)\:\:forceFill\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Method App\\Models\\PendaftaranAnggota\:\:keanggotaan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Method App\\Models\\PendaftaranAnggota\:\:pemutus\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Method App\\Models\\PendaftaranAnggota\:\:ukm\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Method App\\Models\\PendaftaranAnggota\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PendaftaranAnggota.php
+
+		-
+			message: '#^Method App\\Models\\Presensi\:\:petugas\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Presensi.php
+
+		-
+			message: '#^Method App\\Models\\Presensi\:\:registrasiKegiatan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Presensi.php
+
+		-
+			message: '#^Method App\\Models\\RegistrasiKegiatan\:\:kegiatan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RegistrasiKegiatan.php
+
+		-
+			message: '#^Method App\\Models\\RegistrasiKegiatan\:\:presensi\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RegistrasiKegiatan.php
+
+		-
+			message: '#^Method App\\Models\\RegistrasiKegiatan\:\:tiketKegiatan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RegistrasiKegiatan.php
+
+		-
+			message: '#^Method App\\Models\\RegistrasiKegiatan\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RegistrasiKegiatan.php
+
+		-
+			message: '#^Method App\\Models\\TiketKegiatan\:\:registrasiKegiatan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TiketKegiatan.php
+
+		-
+			message: '#^Method App\\Models\\Ukm\:\:divisi\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Ukm.php
+
+		-
+			message: '#^Method App\\Models\\Ukm\:\:keanggotaan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Ukm.php
+
+		-
+			message: '#^Method App\\Models\\Ukm\:\:kegiatan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Ukm.php
+
+		-
+			message: '#^Method App\\Models\\Ukm\:\:pendaftaranAnggota\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Ukm.php
+
+		-
+			message: '#^Method App\\Models\\Ukm\:\:pengurus\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Ukm.php
+
+		-
+			message: '#^Method App\\Models\\Ukm\:\:pengurusAktif\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Ukm.php
+
+		-
+			message: '#^Match arm comparison between ''mahasiswa'' and ''mahasiswa'' is always true\.$#'
+			identifier: match.alwaysTrue
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:divisiUkm\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:keanggotaan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:keputusanPendaftaranAnggota\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:pendaftaranAnggota\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:presensiDicatat\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:registrasiKegiatan\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:ukm\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/TiketKegiatanPolicy.php
+
+		-
+			message: '#^Parameter \#1 \$string of function ucfirst expects string, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: database/factories/UkmFactory.php

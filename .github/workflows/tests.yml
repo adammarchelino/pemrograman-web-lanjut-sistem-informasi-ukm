@@ -32,7 +32,13 @@ jobs:
           node-version: '22'
 
       - name: Setup Application
-        run: composer setup
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+          composer setup
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
 
       - name: Run CI Checks
         run: composer ci:check
