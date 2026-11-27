@@ -17,10 +17,13 @@ class DetailTiket extends Component
 
     public function mount(string $kode_tiket): void
     {
-        // 1. Tiket peserta hanya untuk mahasiswa murni, dicek sebelum data tiket diambil.
-        abort_unless(Auth::user()?->role === User::ROLE_MAHASISWA, 403);
+        $user = Auth::user();
 
-        // 2. Cari tiket berdasarkan kode_tiket (bukan ID angka) beserta data relasinya
+        abort_unless(
+            $user && $user->isActive() && $user->role === User::ROLE_MAHASISWA && ! $user->isPengurusUkm(),
+            403
+        );
+
         $this->tiket = TiketKegiatan::with([
             'registrasiKegiatan.kegiatan.ukm',
             'registrasiKegiatan.user',
@@ -29,7 +32,6 @@ class DetailTiket extends Component
             ->where('kode_tiket', $kode_tiket)
             ->firstOrFail();
 
-        // 3. Pastikan tiket benar milik mahasiswa yang sedang masuk (TiketKegiatanPolicy::view)
         $this->authorize('view', $this->tiket);
     }
 

@@ -15,9 +15,12 @@ class DaftarTiket extends Component
 {
     public function mount(): void
     {
-        // Tiket peserta hanya untuk mahasiswa murni. isMahasiswa() juga true untuk
-        // pengurus UKM (mereka panitia acara, bukan peserta), jadi cek kolom role.
-        abort_unless(Auth::user()?->role === User::ROLE_MAHASISWA, 403);
+        $user = Auth::user();
+
+        abort_unless(
+            $user && $user->isActive() && $user->role === User::ROLE_MAHASISWA && ! $user->isPengurusUkm(),
+            403
+        );
     }
 
     public function render()

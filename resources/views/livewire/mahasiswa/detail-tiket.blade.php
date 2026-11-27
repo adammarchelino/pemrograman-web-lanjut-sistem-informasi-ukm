@@ -31,11 +31,16 @@
         {{-- Wadah QR Code yang dirender oleh JavaScript di app.js --}}
         <div class="flex justify-center py-4 bg-white rounded-xl border border-zinc-100 dark:border-zinc-800" wire:ignore>
             <canvas id="qr-tiket-canvas"></canvas>
+            <p id="qr-tiket-canvas-gagal" role="alert" hidden
+                class="mx-4 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+                QR Code gagal ditampilkan. Tunjukkan atau salin kode tiket di bawah ini kepada pengurus.
+            </p>
         </div>
 
         <div class="space-y-1">
             <flux:text class="text-xs">Kode Tiket</flux:text>
-            <p class="font-mono text-sm font-semibold select-all">{{ $tiket->kode_tiket }}</p>
+            <p id="kode-tiket" class="font-mono text-sm font-semibold break-all select-all">{{ $tiket->kode_tiket }}</p>
+            <flux:button type="button" size="sm" variant="outline" data-salin="kode-tiket" wire:ignore>Salin Kode</flux:button>
         </div>
 
         <div class="border-t border-zinc-200 dark:border-zinc-700 pt-4 text-left text-sm space-y-2">
