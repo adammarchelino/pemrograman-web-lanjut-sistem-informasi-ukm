@@ -1,6 +1,7 @@
 @props([
     'tone' => 'neutral',
     'marker' => true,
+    'pill' => false,
 ])
 
 @php
@@ -30,7 +31,7 @@
     $tone = $tones[$tone] ?? $tones['neutral'];
 @endphp
 
-<span {{ $attributes->merge(['class' => 'inline-flex h-6 shrink-0 items-center gap-1.5 rounded-[3px] border px-2 text-[11px] font-medium whitespace-nowrap '.$tone['box']]) }}>
+<span {{ $attributes->merge(['class' => 'inline-flex h-6 shrink-0 items-center gap-1.5 border px-2 text-[11px] font-medium whitespace-nowrap '.($pill ? 'rounded-full' : 'rounded-[3px]').' '.$tone['box']]) }}>
     @if ($marker)
         <span @class(['size-1.5 shrink-0 rounded-[1px]', $tone['dot']]) aria-hidden="true"></span>
     @endif

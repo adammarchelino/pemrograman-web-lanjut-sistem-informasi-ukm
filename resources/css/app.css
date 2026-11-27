@@ -11,6 +11,19 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
+    /* Permukaan mode gelap halaman publik mengikuti referensi: charcoal netral. */
+    --color-charcoal: #121212;
+    --color-charcoal-900: #161618;
+    --color-charcoal-soft: #1c1c1f;
+    --color-charcoal-raised: #1e1e21;
+    --color-charcoal-sunken: #0d0d0e;
+    --color-charcoal-line: #2a2a2e;
+
+    /* Halaman publik memakai tipografi editorial dari DESIGN.md: Hanken Grotesk
+       untuk judul dan teks, JetBrains Mono untuk metadata institusional. */
+    --font-display: 'Hanken Grotesk', var(--font-sans);
+    --font-label: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
     /* Palet institusional SIP-UKM: biru gelap (navy), biru terang, hitam, putih. */
     --color-navy-50: #f1f5fb;
     --color-navy-100: #e1eaf6;
@@ -96,6 +109,7 @@
 
 /* Rel sidebar ditempatkan di layer utilities agar menang atas kelas lebar Tailwind (w-72, lg:pl-72). */
 @layer utilities {
+
     @media (min-width: 64rem) {
         [data-sidebar='collapsed'] .app-sidebar {
             width: 5rem;

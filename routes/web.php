@@ -15,19 +15,29 @@ use App\Livewire\Ukm\Index as UkmIndex;
 use App\Livewire\Ukm\Profile as UkmProfile;
 use App\Livewire\Ukm\Team as UkmTeam;
 use App\Livewire\Users\Index as UserIndex;
+use App\Models\Keanggotaan;
 use App\Models\Ukm;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $ukmAktif = Ukm::query()
         ->where('status', Ukm::STATUS_AKTIF)
+        ->with(['divisi' => fn ($query) => $query->orderBy('nama')])
+        ->withCount(['keanggotaan as anggota_aktif_count' => fn ($query) => $query->where('status', 'aktif')])
         ->orderBy('nama')
         ->get(['id', 'nama', 'logo', 'deskripsi', 'status_pendaftaran_anggota']);
 
+    // Kartu contoh di hero memakai unit yang benar-benar sedang membuka penerimaan.
+    $ukmSorotan = $ukmAktif->firstWhere('status_pendaftaran_anggota', Ukm::OPREC_DIBUKA)
+        ?? $ukmAktif->first();
+
     return view('welcome', [
         'ukm' => $ukmAktif,
+        'ukmSorotan' => $ukmSorotan,
+        'contohDivisi' => $ukmSorotan?->divisi->take(3) ?? collect(),
         'totalUkm' => Ukm::query()->count(),
         'totalAktif' => $ukmAktif->count(),
+        'anggotaAktif' => Keanggotaan::query()->where('status', 'aktif')->distinct()->count('user_id'),
         'pendaftaranDibuka' => $ukmAktif->where('status_pendaftaran_anggota', Ukm::OPREC_DIBUKA)->count(),
     ]);
 })->name('home');

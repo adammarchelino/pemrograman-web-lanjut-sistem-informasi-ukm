@@ -1,6 +1,8 @@
 @props([
     'sidebar' => false,
     'onPaper' => false,
+    // Baris institusi disembunyikan di layar sempit agar kepala halaman tidak berdesakan.
+    'hideInstitution' => false,
 ])
 
 <a {{ $attributes->merge(['class' => 'inline-flex items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500']) }}>
@@ -17,6 +19,7 @@
         ])>SIP-UKM</span>
         <span @class([
             'mt-1.5 block text-[10px] font-medium uppercase tracking-[0.16em]',
+            'hidden sm:block' => $hideInstitution,
             'text-blue-200/70' => $sidebar,
             'text-slate-500 dark:text-zinc-400' => ! $sidebar && ! $onPaper,
             'text-slate-600 dark:text-slate-400' => $onPaper,

@@ -14,6 +14,42 @@ window.renderTiketQr = async function (canvasId, kodeTiket) {
     }
 };
 
+// Filter direktori UKM di landing. Tanpa JavaScript, semua kartu tetap tampil.
+const initUkmFilter = () => {
+    const root = document.querySelector('[data-ukm-filter]');
+
+    if (!root) return;
+
+    const buttons = Array.from(root.querySelectorAll('[data-ukm-filter-button]'));
+    const items = Array.from(root.querySelectorAll('[data-ukm-status]'));
+    // Penghitung dan pesan kosong berada di luar wadah filter, jadi dicari dari dokumen.
+    const counter = document.querySelector('[data-ukm-count]');
+    const empty = document.querySelector('[data-ukm-empty]');
+
+    const apply = (filter, activeButton) => {
+        let visible = 0;
+
+        buttons.forEach((button) => {
+            button.setAttribute('aria-pressed', String(button === activeButton));
+        });
+
+        items.forEach((item) => {
+            const cocok = filter === 'semua' || item.dataset.ukmStatus === filter;
+
+            item.hidden = ! cocok;
+
+            if (cocok) visible += 1;
+        });
+
+        if (counter) counter.textContent = String(visible);
+        if (empty) empty.hidden = visible > 0;
+    };
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => apply(button.dataset.ukmFilterButton, button));
+    });
+};
+
 const themeIsDark = () => document.documentElement.classList.contains('dark');
 
 const syncThemeToggles = (isDark = themeIsDark()) => {
@@ -99,6 +135,7 @@ document.addEventListener('click', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     syncThemeToggles();
     syncSidebarToggles();
+    initUkmFilter();
 });
 
 document.addEventListener('livewire:navigated', () => {
