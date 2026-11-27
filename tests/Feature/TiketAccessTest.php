@@ -74,3 +74,24 @@ test('menu tiket tidak tampil untuk pengurus dan navigasi presensi tetap berfung
         ->assertOk()
         ->assertSee('Presensi Acara');
 });
+
+test('mahasiswa dengan penugasan pengurus UKM mendapat 403 pada daftar dan detail tiket', function () {
+    $ukm = Ukm::factory()->create();
+    $kegiatan = Kegiatan::factory()->create(['ukm_id' => $ukm->id]);
+
+    $mahasiswaPengurus = User::factory()->create([
+        'role' => User::ROLE_MAHASISWA,
+        'ukm_id' => $ukm->id,
+        'jabatan_ukm' => 'inti',
+    ]);
+
+    $kodeTiket = tiketUntukMahasiswa($mahasiswaPengurus, $kegiatan);
+
+    $this->actingAs($mahasiswaPengurus)
+        ->get(route('tiket.index'))
+        ->assertForbidden();
+
+    $this->actingAs($mahasiswaPengurus)
+        ->get(route('tiket.show', $kodeTiket))
+        ->assertForbidden();
+});
